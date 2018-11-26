@@ -32,8 +32,8 @@ public class CxfConfig {
 
     @Autowired
     private Bus bus;
-
     //终端路径
+
     @Bean
     public Endpoint AppServicePoint() {
         EndpointImpl endpointApp = new EndpointImpl(bus, produceService);
