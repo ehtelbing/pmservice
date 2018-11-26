@@ -21,4 +21,10 @@ public class PmServiceImpl implements PmService {
         List<Map<String, Object>> list = pmRepository.getYearPlanList(V_GUID);
         return "success";
     }
+
+    @Override
+    public String SetMonthPlanList(String V_GUID){
+        List<Map<String, Object>> list = pmRepository.SetMonthPlanList(V_GUID);
+        return "success";
+    }
 }

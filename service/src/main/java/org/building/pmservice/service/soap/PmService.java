@@ -8,4 +8,7 @@ import javax.jws.WebService;
 public interface PmService {
     @WebMethod
     public String getYearPlanList(String V_GUID);
+
+    @WebMethod
+    public String SetMonthPlanList(String V_GUID);
 }
