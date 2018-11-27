@@ -443,23 +443,23 @@ public class PmRepository {
 
                 while (rs.next()) {// 转换每行的返回值到Map中
                     Element WriteDataRecord = WriteDataRequest.addElement("Item");
-                    WriteDataRecord.addElement("SYSCODE").setText(rs.getString("V_MANCODE"));
-                    WriteDataRecord.addElement("PROCODE");
-                    WriteDataRecord.addElement("LOGTYPE");
-                    WriteDataRecord.addElement("OPERTIME");
-                    WriteDataRecord.addElement("CLIENT_HOST");
-                    WriteDataRecord.addElement("CLIENT_IP");
-                    WriteDataRecord.addElement("CLIENT_BROWSER");
-                    WriteDataRecord.addElement("COMPUTER_TYPE");
-                    WriteDataRecord.addElement("OPERUSER");
-                    WriteDataRecord.addElement("USER_ACCOUNT");
-                    WriteDataRecord.addElement("USER_CODE");
-                    WriteDataRecord.addElement("ROLE");
-                    WriteDataRecord.addElement("OPERTYPE");
-                    WriteDataRecord.addElement("ATTTYPE");
-                    WriteDataRecord.addElement("OPERRESULT");
-                    WriteDataRecord.addElement("LOGDES");
-                    WriteDataRecord.addElement("CLIENT_SYS");
+                    WriteDataRecord.addElement("SYSCODE").setText(rs.getString("SYSCODE"));
+                    WriteDataRecord.addElement("PROCODE").setText(rs.getString("PROCODE"));
+                    WriteDataRecord.addElement("LOGTYPE").setText(rs.getString("LOGTYPE"));
+                    WriteDataRecord.addElement("OPERTIME").setText(rs.getString("OPERTIME"));
+                    WriteDataRecord.addElement("CLIENT_HOST").setText(rs.getString("CLIENT_HOST"));
+                    WriteDataRecord.addElement("CLIENT_IP").setText(rs.getString("CLIENT_IP"));
+                    WriteDataRecord.addElement("CLIENT_BROWSER").setText(rs.getString("CLIENT_BROWSER"));
+                    WriteDataRecord.addElement("COMPUTER_TYPE").setText(rs.getString("COMPUTER_TYPE"));
+                    WriteDataRecord.addElement("OPERUSER").setText(rs.getString("OPERUSER"));
+                    WriteDataRecord.addElement("USER_ACCOUNT").setText(rs.getString("USER_ACCOUNT"));
+                    WriteDataRecord.addElement("USER_CODE").setText(rs.getString("USER_CODE"));
+                    WriteDataRecord.addElement("ROLE").setText(rs.getString("ROLENAME"));
+                    WriteDataRecord.addElement("OPERTYPE").setText(rs.getString("OPERTYPE"));
+                    WriteDataRecord.addElement("ATTTYPE").setText(rs.getString("ATTTYPE"));
+                    WriteDataRecord.addElement("OPERRESULT").setText(rs.getString("OPERRESULT"));
+                    WriteDataRecord.addElement("LOGDES").setText(rs.getString("LOGDES"));
+                    WriteDataRecord.addElement("CLIENT_SYS").setText(rs.getString("CLIENT_SYS"));
                 }
                 return root.asXML();
             }
