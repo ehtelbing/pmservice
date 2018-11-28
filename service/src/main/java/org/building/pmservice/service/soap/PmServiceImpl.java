@@ -1,11 +1,15 @@
 package org.building.pmservice.service.soap;
 
-import org.building.pmservice.service.enity.LoginInforData;
 import org.building.pmservice.service.repository.PmRepository;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,14 +27,9 @@ public class PmServiceImpl implements PmService {
     }
 
     @Override
-    public String SetMonthPlanList(String V_GUID){
+    public String SetMonthPlanList(String V_GUID) {
         List<Map<String, Object>> list = pmRepository.SetMonthPlanList(V_GUID);
         return "success";
     }
 
-    @Override
-    public String LoginInforXMLData(LoginInforData loginInforData){
-        String result=pmRepository.LoginInforXMLData(loginInforData);
-        return result;
-    }
 }
