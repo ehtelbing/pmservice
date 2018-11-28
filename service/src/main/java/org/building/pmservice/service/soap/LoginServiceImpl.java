@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@WebService(serviceName="LoginInforXMLData",targetNamespace="http://actions")
+@WebService(serviceName = "LoginInforXMLData", targetNamespace = "http://actions")
 @Component
 public class LoginServiceImpl implements LoginService {
 
@@ -23,25 +23,18 @@ public class LoginServiceImpl implements LoginService {
     private LoginRepository loginRepository;
 
     @Override
-    public String LoginInforXMLData( String clientXml) {
+    public String LoginInforXMLData(String clientXml) {
         String result = null;
         try {
             Document doc = DocumentHelper.parseText(clientXml);
 
             Element rootElt = doc.getRootElement();
-            Iterator iter = rootElt.elementIterator("LOGINLOG");
+            String USERNAME = rootElt.element("USERNAME").getText();
+            String PASSWORD = rootElt.element("PASSWORD").getText();
+            String BEGINTIME = rootElt.element("BEGINTIME").getText();
+            String ENDTIME = rootElt.element("ENDTIME").getText();
 
-            while (iter.hasNext()) {
-                Element recordEle = (Element) iter.next();
-
-                String USERNAME = recordEle.elementTextTrim("USERNAME");
-                String PASSWORD = recordEle.elementTextTrim("PASSWORD");
-                String BEGINTIME = recordEle.elementTextTrim("BEGINTIME");
-
-                String ENDTIME = recordEle.elementTextTrim("ENDTIME");
-
-                result = loginRepository.LoginInforXMLData(USERNAME,PASSWORD,BEGINTIME,ENDTIME);
-            }
+            result = loginRepository.LoginInforXMLData(USERNAME, PASSWORD, BEGINTIME, ENDTIME);
 
         } catch (DocumentException e) {
             e.printStackTrace();
