@@ -9,6 +9,7 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.Iterator;
 import java.util.List;
@@ -22,10 +23,10 @@ public class LoginServiceImpl implements LoginService {
     private LoginRepository loginRepository;
 
     @Override
-    public String LoginInforXMLData(String GetXml) {
+    public String LoginInforXMLData( String clientXml) {
         String result = null;
         try {
-            Document doc = DocumentHelper.parseText(GetXml);
+            Document doc = DocumentHelper.parseText(clientXml);
 
             Element rootElt = doc.getRootElement();
             Iterator iter = rootElt.elementIterator("LOGINLOG");
