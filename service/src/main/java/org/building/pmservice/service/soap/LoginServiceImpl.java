@@ -24,7 +24,6 @@ public class LoginServiceImpl implements LoginService {
     private LoginRepository loginRepository;
 
     @Override
-    @WebMethod(operationName="LoginInforXMLData")
     public String LoginInforXMLData(String clientXml) {
         String result = null;
         try {

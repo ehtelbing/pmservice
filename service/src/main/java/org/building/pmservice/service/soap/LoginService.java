@@ -6,6 +6,7 @@ import javax.jws.WebService;
 
 @WebService
 public interface LoginService {
-    @WebMethod
+
+    @WebMethod(operationName="LoginInforXMLData")
     String LoginInforXMLData(@WebParam(name="clientXml") String GetXml);
 }
