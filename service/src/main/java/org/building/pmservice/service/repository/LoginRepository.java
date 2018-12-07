@@ -65,8 +65,8 @@ public class LoginRepository {
                 if(result.equals("SUCCESS")){
                     while (rs.next()) {// 转换每行的返回值到Map中
                         Element WriteDataRecord = WriteDataRequest.addElement("Item");
-                        WriteDataRecord.addElement("SYSCODE").setText(rs.getString("SYSCODE")==null?"":rs.getString("SYSCODE"));
-                        WriteDataRecord.addElement("PROCODE").setText(rs.getString("PROCODE")==null?"":rs.getString("PROCODE"));
+                        WriteDataRecord.addElement("SYSCODE").setText("SW00092");
+                        WriteDataRecord.addElement("PROCODE").setText("SW00092");
                         WriteDataRecord.addElement("LOGTYPE").setText(rs.getString("LOGTYPE")==null?"":rs.getString("LOGTYPE"));
                         WriteDataRecord.addElement("OPERTIME").setText(rs.getString("OPERTIME")==null?"":rs.getString("OPERTIME"));
                         WriteDataRecord.addElement("CLIENT_HOST").setText(rs.getString("CLIENT_HOST")==null?"":rs.getString("CLIENT_HOST"));

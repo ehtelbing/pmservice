@@ -9,6 +9,7 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ public class LoginServiceImpl implements LoginService {
     private LoginRepository loginRepository;
 
     @Override
+    @WebMethod(operationName="LoginInforXMLData")
     public String LoginInforXMLData(String clientXml) {
         String result = null;
         try {
