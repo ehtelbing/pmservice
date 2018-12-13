@@ -1,6 +1,7 @@
 package org.building.pmservice.service.soap;
 
 import org.building.pmservice.service.repository.LoginRepository;
+import org.building.pmservice.service.repository.PmRepository;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -8,9 +9,10 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-@WebService( targetNamespace = "http://actions")
+@WebService
 @Component
 public class LoginServiceImpl implements LoginService {
 
