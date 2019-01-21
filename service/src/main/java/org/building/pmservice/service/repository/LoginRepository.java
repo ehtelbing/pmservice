@@ -69,19 +69,31 @@ public class LoginRepository {
                         WriteDataRecord.addElement("PROCODE").setText("SW00092");
                         WriteDataRecord.addElement("LOGTYPE").setText(rs.getString("LOGTYPE")==null?"":rs.getString("LOGTYPE"));
                         WriteDataRecord.addElement("OPERTIME").setText(rs.getString("OPERTIME")==null?"":rs.getString("OPERTIME"));
-                        WriteDataRecord.addElement("CLIENT_HOST").setText(rs.getString("CLIENT_HOST")==null?"":rs.getString("CLIENT_HOST"));
-                        WriteDataRecord.addElement("CLIENT_IP").setText(rs.getString("CLIENT_IP")==null?"":rs.getString("CLIENT_IP"));
-                        WriteDataRecord.addElement("CLIENT_BROWSER").setText(rs.getString("CLIENT_BROWSER")==null?"":rs.getString("CLIENT_BROWSER"));
+                        WriteDataRecord.addElement("CLIENT_HOST").setText(rs.getString("CLIENT_HOST")==null?"未获取":rs.getString("CLIENT_HOST"));
+                        WriteDataRecord.addElement("CLIENT_IP").setText(rs.getString("CLIENT_IP")==null?"未获取":rs.getString("CLIENT_IP"));
+                        WriteDataRecord.addElement("CLIENT_BROWSER").setText(rs.getString("CLIENT_BROWSER")==null?"其他":rs.getString("CLIENT_BROWSER"));
                         WriteDataRecord.addElement("COMPUTER_TYPE").setText(rs.getString("COMPUTER_TYPE")==null?"":rs.getString("COMPUTER_TYPE"));
                         WriteDataRecord.addElement("OPERUSER").setText(rs.getString("OPERUSER")==null?"":rs.getString("OPERUSER"));
                         WriteDataRecord.addElement("USER_ACCOUNT").setText(rs.getString("USER_ACCOUNT")==null?"":rs.getString("USER_ACCOUNT"));
                         WriteDataRecord.addElement("USER_CODE").setText(rs.getString("USER_CODE")==null?"":rs.getString("USER_CODE"));
                         WriteDataRecord.addElement("ROLE").setText(rs.getString("ROLENAME")==null?"":rs.getString("ROLENAME"));
                         WriteDataRecord.addElement("OPERTYPE").setText(rs.getString("OPERTYPE")==null?"":rs.getString("OPERTYPE"));
-                        WriteDataRecord.addElement("ATTTYPE").setText(rs.getString("ATTTYPE")==null?"":rs.getString("ATTTYPE"));
+                        WriteDataRecord.addElement("ATTTYPE").setText(rs.getString("ATTTYPE")==null?"空":rs.getString("ATTTYPE"));
                         WriteDataRecord.addElement("OPERRESULT").setText(rs.getString("OPERRESULT")==null?"":rs.getString("OPERRESULT"));
                         WriteDataRecord.addElement("LOGDES").setText(rs.getString("LOGDES")==null?"":rs.getString("LOGDES"));
-                        WriteDataRecord.addElement("CLIENT_SYS").setText(rs.getString("CLIENT_SYS")==null?"":rs.getString("CLIENT_SYS"));
+                        if(rs.getString("CLIENT_SYS")==null){
+                            WriteDataRecord.addElement("CLIENT_SYS").setText("未获取");
+                        }else{
+                            if(rs.getString("CLIENT_SYS").equals("WINDOWS_XP")){
+                                WriteDataRecord.addElement("CLIENT_SYS").setText("WinXP");
+                            }else if(rs.getString("CLIENT_SYS").indexOf("WINDOWS_")!=-1 && !rs.getString("CLIENT_SYS").equals("WINDOWS_XP")){
+                                WriteDataRecord.addElement("CLIENT_SYS").setText(rs.getString("CLIENT_SYS").replace("_",""));
+                            }else if(rs.getString("CLIENT_SYS").equals("Linux") || rs.getString("CLIENT_SYS").equals("Unix")){
+                                WriteDataRecord.addElement("CLIENT_SYS").setText("UNIX2.0.50");
+                            }else{
+                                WriteDataRecord.addElement("CLIENT_SYS").setText(rs.getString("CLIENT_SYS")==null?"":rs.getString("CLIENT_SYS"));
+                            }
+                        }
                     }
                 }else{
                     WriteDataRequest.addElement("FLAG").setText("1");
