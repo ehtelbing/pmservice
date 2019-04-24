@@ -4,10 +4,7 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.transport.servlet.CXFServlet;
-import org.building.pmservice.service.soap.LoginService;
-import org.building.pmservice.service.soap.PmService;
-import org.building.pmservice.service.soap.ProduceService;
-import org.building.pmservice.service.soap.WxjhService;
+import org.building.pmservice.service.soap.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +32,9 @@ public class CxfConfig {
     private LoginService loginService;
     @Autowired
     private WxjhService wxjhService;
+
+    @Autowired
+    private DjService djService;
 
     @Autowired
     private Bus bus;
@@ -68,6 +68,14 @@ public class CxfConfig {
     public Endpoint WxjhServicePoint() {
         EndpointImpl endpointApp = new EndpointImpl(bus, wxjhService);
         endpointApp.publish("/WxjhService");
+        return endpointApp;
+    }
+
+    //终端路径
+    @Bean
+    public Endpoint DjServicePoint() {
+        EndpointImpl endpointApp = new EndpointImpl(bus, djService);
+        endpointApp.publish("/DjService");
         return endpointApp;
     }
 

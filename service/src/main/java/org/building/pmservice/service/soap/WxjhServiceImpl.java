@@ -1,9 +1,6 @@
 package org.building.pmservice.service.soap;
 
-import org.building.pmservice.service.Enity.WwqxbhEnity;
-import org.building.pmservice.service.Enity.WwqxbhReturnEnity;
-import org.building.pmservice.service.Enity.WxqxcljgEnity;
-import org.building.pmservice.service.Enity.WxqxcljgReturnEnity;
+import org.building.pmservice.service.Enity.*;
 import org.building.pmservice.service.repository.WxjhRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -79,6 +76,36 @@ public class WxjhServiceImpl implements WxjhService {
             }
         } catch (Exception e) {
             wxjhRepository.WebServiceLog("", "", "失败", "外委维修计划缺陷驳回WebService失败，失败信息为" + e.getMessage());
+            ret.setV_INFO(e.getMessage());
+            ret.setV_TYPE("E");
+        }
+        ret.setV_INFO("成功！");
+        ret.setV_TYPE("S");
+    }
+
+    @Override
+    public void Wwjsqxjg(List<WwjsqxjgEnity> items){
+        WwjsqxjgReturnEnity ret = new WwjsqxjgReturnEnity();
+        try {
+            String result = "";
+            if (items.size() > 0) {
+                for (int i = 0; i < items.size(); i++) {
+                    WwjsqxjgEnity w = items.get(i);
+                    try {
+
+                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID());
+                        if (result.equals("SUCCESS")) {
+                            wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "成功", "委外竣工（决算）结果上传WebService成功，信息插入成功！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
+                        } else {
+                            wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "失败", "委外竣工（决算）结果上传WebService成功，信息插入失败！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
+                        }
+                    } catch (Exception e) {
+                        wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "失败", "委外竣工（决算）结果上传WebService成功，信息插入失败！失败信息为" + e.getMessage() + "唯一值为缺陷guid" + w.getV_DEFECT_GUID());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            wxjhRepository.WebServiceLog("", "", "失败", "委外竣工（决算）结果上传WebService失败，失败信息为" + e.getMessage());
             ret.setV_INFO(e.getMessage());
             ret.setV_TYPE("E");
         }
