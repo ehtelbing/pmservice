@@ -28,17 +28,18 @@ public class DjRepository {
         this.template = new JdbcTemplate(dataSource);
     }
 
-    public Map ImportDefect(String V_V_I_ID, String V_V_DEFECTLIST, String V_V_DEFTYPE,
+    public Map ImportDefect(String V_V_SYSTEM,String V_V_I_ID, String V_V_DEFECTLIST, String V_V_DEFTYPE,
                             String V_V_SOURCEID, String V_D_DEFECTDATE, String V_D_INDATE, String V_V_PERCODE, String V_V_PERNAME,
                             String V_V_DEPTCODE, String V_V_EQUCODE, String V_V_IDEA, String V_V_EQUSITE, String V_V_EQUCHILDCODE,
                             String V_V_INPERCODE, String V_V_INPERNAME, String V_V_EQUTYPECODE, String V_V_ORGCODE, String V_V_BZ) {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
-                String sql = "{call PRO_DEFECT_IMPORT(:V_V_I_ID,:V_V_DEFECTLIST,:V_V_DEFTYPE,:V_V_SOURCEID,:V_D_DEFECTDATE,:V_D_INDATE,:V_V_PERCODE,:V_v_PERNAME" +
+                String sql = "{call PRO_DEFECT_IMPORT(:V_V_SYSTEM,:V_V_I_ID,:V_V_DEFECTLIST,:V_V_DEFTYPE,:V_V_SOURCEID,:V_D_DEFECTDATE,:V_D_INDATE,:V_V_PERCODE,:V_v_PERNAME" +
                         ",:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_IDEA,:V_V_EQUSITE,:V_V_EQUCHILDCODE,:V_V_INPERCODE,:V_V_INPERNAME,:V_V_EQUTYPECODE,:V_V_ORGCODE,:V_V_BZ,:V_V_GUID,:V_INFO)}";
 
                 CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_V_SYSTEM", V_V_SYSTEM);
                 statement.setString("V_V_I_ID", V_V_I_ID);
                 statement.setString("V_V_DEFECTLIST", V_V_DEFECTLIST);
                 statement.setString("V_V_DEFTYPE", V_V_DEFTYPE);

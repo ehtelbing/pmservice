@@ -1,6 +1,6 @@
 package org.building.pmservice.service.soap;
 
-import org.building.pmservice.service.repository.TaskRepository;
+import org.building.pmservice.service.repository.TaskAMToMessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
@@ -18,15 +18,15 @@ import java.util.Map;
 
 @Configuration
 @EnableScheduling
-public class TaskService {
+public class TaskAMToMessService {
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskAMToMessRepository taskAMToMessRepository;
 
     @Scheduled(cron = "0 */10 * * * ?")
     //@Scheduled(cron = "*/5 * * * * ?")
     @Async
     public void SetErrorAMToMess() {
-        List result = taskRepository.SetWeekAMToMess("ERROR");
+        List result = taskAMToMessRepository.SetWeekAMToMess("ERROR");
         if (result.size() > 0) {
             String ret = MessageGet(result);
             if (ret.equals("Success")) {
@@ -39,7 +39,7 @@ public class TaskService {
     @Scheduled(cron = "0 0 13 ? * THU")
     @Async
     public void SetWeekAMToMess() {
-        List result = taskRepository.SetWeekAMToMess("周计划");
+        List result = taskAMToMessRepository.SetWeekAMToMess("周计划");
         if (result.size() > 0) {
             String ret = MessageGet(result);
             if (ret.equals("Success")) {
@@ -51,7 +51,7 @@ public class TaskService {
     @Scheduled(cron = "0 0 9 22 * ?")
     @Async
     public void SetMonthAMToMess() {
-        List result = taskRepository.SetWeekAMToMess("月计划");
+        List result = taskAMToMessRepository.SetWeekAMToMess("月计划");
         String ret = MessageGet(result);
         if (ret.equals("Success")) {
             UpdateAMToMessState("月计划");
@@ -61,7 +61,7 @@ public class TaskService {
     @Scheduled(cron = "0 0 9 1 11 ?")
     @Async
     public void SetYearAMToMess() {
-        List result = taskRepository.SetWeekAMToMess("年计划");
+        List result = taskAMToMessRepository.SetWeekAMToMess("年计划");
         if (result.size() > 0) {
             String ret = MessageGet(result);
             if (ret.equals("Success")) {
@@ -154,7 +154,7 @@ public class TaskService {
     }
 
     public void UpdateAMToMessState(String type) {
-        String result = taskRepository.UpdateAMToMessState(type);
+        String result = taskAMToMessRepository.UpdateAMToMessState(type);
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 @Repository
-public class TaskRepository {
+public class TaskAMToMessRepository {
 
     private JdbcTemplate template;
 

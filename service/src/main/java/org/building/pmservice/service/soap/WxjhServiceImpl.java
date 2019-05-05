@@ -17,7 +17,7 @@ public class WxjhServiceImpl implements WxjhService {
     private WxjhRepository wxjhRepository;
 
     @Override
-    public void WWQXCLJG(List<WxqxcljgEnity> items) {
+    public WxqxcljgReturnEnity WWQXCLJG(List<WxqxcljgEnity> items) {
         WxqxcljgReturnEnity ret = new WxqxcljgReturnEnity();
         try {
             String result = "";
@@ -50,11 +50,12 @@ public class WxjhServiceImpl implements WxjhService {
         }
         ret.setV_INFO("成功！");
         ret.setV_TYPE("S");
+        return ret;
     }
 
 
     @Override
-    public void WWQXBH(List<WwqxbhEnity> items) {
+    public WwqxbhReturnEnity WWQXBH(List<WwqxbhEnity> items) {
         WwqxbhReturnEnity ret = new WwqxbhReturnEnity();
         try {
             String result = "";
@@ -81,10 +82,11 @@ public class WxjhServiceImpl implements WxjhService {
         }
         ret.setV_INFO("成功！");
         ret.setV_TYPE("S");
+        return ret;
     }
 
     @Override
-    public void Wwjsqxjg(List<WwjsqxjgEnity> items){
+    public WwjsqxjgReturnEnity Wwjsqxjg(List<WwjsqxjgEnity> items){
         WwjsqxjgReturnEnity ret = new WwjsqxjgReturnEnity();
         try {
             String result = "";
@@ -111,5 +113,6 @@ public class WxjhServiceImpl implements WxjhService {
         }
         ret.setV_INFO("成功！");
         ret.setV_TYPE("S");
+        return ret;
     }
 }
