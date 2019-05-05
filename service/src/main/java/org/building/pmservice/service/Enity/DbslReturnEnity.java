@@ -3,7 +3,7 @@ package org.building.pmservice.service.Enity;
 public class DbslReturnEnity {
     private String V_USERCODE;
     private String V_SYSTEM;
-    private int N_COUNT;
+    private Integer N_COUNT;
     private String V_URL;
 
     public String getV_USERCODE() {
@@ -22,11 +22,11 @@ public class DbslReturnEnity {
         V_SYSTEM = v_SYSTEM;
     }
 
-    public int getN_COUNT() {
+    public Integer getN_COUNT() {
         return N_COUNT;
     }
 
-    public void setN_COUNT(int n_COUNT) {
+    public void setN_COUNT(Integer n_COUNT) {
         N_COUNT = n_COUNT;
     }
 
