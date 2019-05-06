@@ -1,9 +1,6 @@
 package org.building.pmservice.service.soap;
 
 
-import org.building.pmservice.service.Enity.DbslEnity;
-import org.building.pmservice.service.Enity.DbslReturnEnity;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -15,9 +12,5 @@ public interface PmService {
 
     @WebMethod
     public String SetMonthPlanList(String V_GUID);
-
-
-    @WebMethod
-    public DbslReturnEnity DBSL(DbslEnity dbslEnity);
 
 }
