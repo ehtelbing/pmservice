@@ -1,6 +1,10 @@
 package org.building.pmservice.service.soap;
 
 import org.building.pmservice.service.repository.PmRepository;
+import org.building.pmservice.service.wclient.DJQXCLJG.DTDJQXCLJG;
+import org.building.pmservice.service.wclient.DJQXCLJG.DTDJQXCLJGRet;
+import org.building.pmservice.service.wclient.DJQXCLJG.SIDJQXCLJGOutSyn;
+import org.building.pmservice.service.wclient.DJQXCLJG.SIDJQXCLJGOutSynService;
 import org.building.pmservice.service.wclient.JXWCJG.DTJXWCJG;
 import org.building.pmservice.service.wclient.JXWCJG.DTJXWCJGRet;
 import org.building.pmservice.service.wclient.JXWCJG.SIJXWCJGOutSyn;
@@ -50,6 +54,7 @@ public class PmServiceImpl implements PmService {
 
             Map retMap = pmRepository.PM_DEFECT_LOG_FROMPRO_DEFECT_S(mapEle.get("XML").toString());
             String DefectPicUrl = mapEle.get("Url").toString();
+            String ProjectUrl = mapEle.get("ProjectUrl").toString();
 
             DTWWQX dtwwqx = new DTWWQX();
             List<DTWWQX.Items> dlist = new ArrayList<DTWWQX.Items>();
@@ -58,7 +63,7 @@ public class PmServiceImpl implements PmService {
             List list = (List) retMap.get("list");
             for (int i = 0; i < list.size(); i++) {
                 Map map = (Map) list.get(i);
-                items.setVBILLADD(map.get("V_BILL_ADD").toString());
+                items.setVBILLADD(ProjectUrl+map.get("V_BILL_CODE").toString());
                 items.setVBILLCODE(map.get("V_BILL_CODE").toString());
                 items.setVCPZL(map.get("V_CPZL").toString());
                 items.setVDEFECTDATE(map.get("V_DEFECTDATE").toString());
@@ -103,18 +108,15 @@ public class PmServiceImpl implements PmService {
 
             if (ret.getVTYPE().equals("S")) {
                 result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "成功", "检修完成结果下传WebService成功，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "接口返回信息数量为：" + dtwwqx.getItems().size());
-                result.put("type", ret.getVTYPE());
-                result.put("info", ret.getVINFO());
 
+                WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
                 WriteDataRequest.addElement("info").setText(ret.getVINFO());
 
             } else {
                 result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "接口返回信息数量为：" + dtwwqx.getItems().size());
 
-                result.put("type", ret.getVTYPE());
-                result.put("info", ret.getVINFO());
-
+                WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
                 WriteDataRequest.addElement("info").setText(ret.getVINFO());
             }
@@ -122,9 +124,8 @@ public class PmServiceImpl implements PmService {
         } catch (Exception e) {
             e.printStackTrace();
             result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "错误信息为：" + e.getMessage());
-            result.put("type", "E");
-            result.put("info", e.getMessage());
 
+            WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
             WriteDataRequest.addElement("type").setText("E");
             WriteDataRequest.addElement("info").setText(e.getMessage());
         }
@@ -178,27 +179,114 @@ public class PmServiceImpl implements PmService {
 
             if (ret.getVTYPE().equals("S")) {
                 result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "成功", "检修完成结果下传WebService成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
-                result.put("type", ret.getVTYPE());
-                result.put("info", ret.getVINFO());
+
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
+                WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("info").setText(ret.getVINFO());
             } else {
                 result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
 
-                result.put("type", ret.getVTYPE());
-                result.put("info", ret.getVINFO());
-
+                WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
                 WriteDataRequest.addElement("info").setText(ret.getVINFO());
             }
         } catch (Exception e) {
             e.printStackTrace();
             result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "错误信息为：" + e.getMessage());
-            result.put("type", "E");
-            result.put("info", e.getMessage());
 
+            WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
             WriteDataRequest.addElement("type").setText("E");
             WriteDataRequest.addElement("info").setText(e.getMessage());
+        }
+        return root.asXML();
+    }
+
+    @Override
+    public String PM0010(String clientXml) {
+        Map result = new HashMap();
+        Document root = DocumentHelper.createDocument();
+        Element WriteDataRequest = root.addElement("RetItems");
+        Map<String, Object> mapEle = new HashMap<String, Object>();
+        String V_V_SYSTEM = "";
+        try {
+            Document doc = DocumentHelper.parseText(clientXml);
+            Element rootElt = doc.getRootElement();
+            List<Element> childElements = rootElt.elements();
+
+            mapEle = getAllElements(childElements, mapEle);
+
+            DTDJQXCLJG dtdjqxcljg = new DTDJQXCLJG();
+            List<DTDJQXCLJG.ITEMS> list = dtdjqxcljg.getITEMS();
+
+            DTDJQXCLJG.ITEMS items = new DTDJQXCLJG.ITEMS();
+
+            Map map = pmRepository.PRO_PM_DEFECT_SEL_GUID(mapEle.get("GUID").toString());
+
+            List mlist = (List) map.get("list");
+
+
+            for (int i = 0; i < mlist.size(); i++) {
+                Map lmap = (Map) mlist.get(i);
+
+                V_V_SYSTEM = lmap.get("V_SYSTEM").toString();
+                dtdjqxcljg.setVSYSTEM(lmap.get("V_SYSTEM").toString());
+
+                items.setIID(lmap.get("V_GUID").toString());
+                if (lmap.get("V_STATECODE").toString().equals("30")) {
+                    items.setVSTATE("1");
+                } else {
+                    items.setVSTATE("0");
+                }
+                items.setVREMARKS(lmap.get("V_BZ").toString());
+                items.setVSTR01("");
+                items.setVSTR02("");
+                items.setVSTR03("");
+                items.setVSTR04("");
+                items.setVSTR05("");
+            }
+            list.add(items);
+
+            dtdjqxcljg.setItems(list);
+
+            URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
+            QName name = new QName("http://www.anshanmining.com/EAM_PM/", "SI_DJQXCLJG_Out_SynService");
+            SIDJQXCLJGOutSynService sidjqxcljgOutSynService = new SIDJQXCLJGOutSynService(url, name);
+            SIDJQXCLJGOutSyn soap = sidjqxcljgOutSynService.getSIDJQXCLJGOutSynPort();
+
+
+            BindingProvider bp = (BindingProvider) soap;
+            bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
+            bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
+            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm0010Url").toString());
+
+            DTDJQXCLJGRet ret = soap.siDJQXCLJG(dtdjqxcljg);
+
+            List<DTDJQXCLJGRet.ITEMS> retList = ret.getITEMS();
+
+            for (int j = 0; j < retList.size(); j++) {
+                DTDJQXCLJGRet.ITEMS retitems = new DTDJQXCLJGRet.ITEMS();
+                Element PackName = WriteDataRequest.addElement("items");
+                if (retitems.getVTYPE().equals("S")) {
+                    result = pmRepository.WebServiceLog(V_V_SYSTEM, retitems.getVGUID(), "成功", "检修完成结果下传WebService成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "接口返回信息为：" + retitems.getVINFO());
+                    PackName.addElement("type").setText(retitems.getVTYPE());
+                    PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
+                    PackName.addElement("info").setText(retitems.getVINFO());
+                } else {
+                    result = pmRepository.WebServiceLog(V_V_SYSTEM, retitems.getVGUID(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "接口返回信息为：" + retitems.getVINFO());
+                    PackName.addElement("type").setText(retitems.getVTYPE());
+                    PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
+                    PackName.addElement("info").setText(retitems.getVINFO());
+                }
+            }
+
+        } catch (Exception e) {
+            Element PackName = WriteDataRequest.addElement("items");
+            e.printStackTrace();
+            result = pmRepository.WebServiceLog(V_V_SYSTEM, mapEle.get("GUID").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "错误信息为：" + e.getMessage());
+
+            PackName.addElement("type").setText("E");
+            PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
+            PackName.addElement("info").setText(e.getMessage());
         }
         return root.asXML();
     }
