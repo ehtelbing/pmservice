@@ -1,6 +1,7 @@
 package org.building.pmservice.service.Enity;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 public class WxqxcljgEnity {
     private String V_SYSTEM;
@@ -20,10 +21,10 @@ public class WxqxcljgEnity {
     private String V_REPAIR_DEPT;
     private String V_REPAIR_DEPT_TXT;
     private String V_FZR;
-    private Date V_DATE_B;
-    private Date V_DATE_E;
+    private String V_DATE_B;
+    private String V_DATE_E;
     private String V_INPER;
-    private Date V_INTIEM;
+    private String V_INTIEM;
     private String V_PORJECT_GUID;
     private String V_STR01;
     private String V_STR02;
@@ -169,36 +170,12 @@ public class WxqxcljgEnity {
         V_FZR = v_FZR;
     }
 
-    public Date getV_DATE_B() {
-        return V_DATE_B;
-    }
-
-    public void setV_DATE_B(Date v_DATE_B) {
-        V_DATE_B = v_DATE_B;
-    }
-
-    public Date getV_DATE_E() {
-        return V_DATE_E;
-    }
-
-    public void setV_DATE_E(Date v_DATE_E) {
-        V_DATE_E = v_DATE_E;
-    }
-
     public String getV_INPER() {
         return V_INPER;
     }
 
     public void setV_INPER(String v_INPER) {
         V_INPER = v_INPER;
-    }
-
-    public Date getV_INTIEM() {
-        return V_INTIEM;
-    }
-
-    public void setV_INTIEM(Date v_INTIEM) {
-        V_INTIEM = v_INTIEM;
     }
 
     public String getV_PORJECT_GUID() {
@@ -255,5 +232,29 @@ public class WxqxcljgEnity {
 
     public void setV_GUID(String v_GUID) {
         V_GUID = v_GUID;
+    }
+
+    public String getV_DATE_B() {
+        return V_DATE_B;
+    }
+
+    public void setV_DATE_B(String v_DATE_B) {
+        V_DATE_B = v_DATE_B;
+    }
+
+    public String getV_DATE_E() {
+        return V_DATE_E;
+    }
+
+    public void setV_DATE_E(String v_DATE_E) {
+        V_DATE_E = v_DATE_E;
+    }
+
+    public String getV_INTIEM() {
+        return V_INTIEM;
+    }
+
+    public void setV_INTIEM(String v_INTIEM) {
+        V_INTIEM = v_INTIEM;
     }
 };

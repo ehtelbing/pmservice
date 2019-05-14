@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @WebService
@@ -26,13 +25,11 @@ public class WxjhServiceImpl implements WxjhService {
                     WxqxcljgEnity w = items.get(i);
                     try {
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
                         result = wxjhRepository.InsertWxProject(w.getV_SYSTEM(), w.getV_GUID(), w.getV_DEFECT_GUID(), w.getV_YEAR(), w.getV_MONTH(),
                                 w.getV_ORGCODE(), w.getV_DEPTCODE(), w.getV_PROJECT_CODE(), w.getV_PROJECT_NAME(), w.getV_WBS_CODE(),
                                 "", w.getV_CONTENT(), String.valueOf(w.getV_BUDGET_MONEY()), w.getV_BILL_CODE(), w.getV_PROJECT_STATUS(), w.getV_DEFECT_STATUS(), w.getV_REPAIR_DEPT(),
-                                w.getV_REPAIR_DEPT_TXT(), w.getV_FZR(), sdf.format(w.getV_DATE_B()), sdf.format(w.getV_DATE_E()),
-                                w.getV_INPER(), sdf.format(w.getV_INTIEM()), w.getV_PORJECT_GUID());
+                                w.getV_REPAIR_DEPT_TXT(), w.getV_FZR(), w.getV_DATE_B(), w.getV_DATE_E(),
+                                w.getV_INPER(), w.getV_INTIEM(), w.getV_PORJECT_GUID());
                         if (result.equals("SUCCESS")) {
                             wxjhRepository.WebServiceLog(w.getV_SYSTEM(), w.getV_GUID(), "成功", "外委放行计划WebService传递成功，信息插入成功！唯一值为放行计划guid" + w.getV_GUID());
                         } else {
@@ -86,7 +83,7 @@ public class WxjhServiceImpl implements WxjhService {
     }
 
     @Override
-    public WwjsqxjgReturnEnity Wwjsqxjg(List<WwjsqxjgEnity> items){
+    public WwjsqxjgReturnEnity Wwjsqxjg(List<WwjsqxjgEnity> items) {
         WwjsqxjgReturnEnity ret = new WwjsqxjgReturnEnity();
         try {
             String result = "";

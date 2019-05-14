@@ -138,4 +138,27 @@ public class PmRepository {
             }
         });
     }
+
+    public Map PRO_PM_DEFECT_SEL_PROJECT(String v_defect_guid) {
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PRO_PM_DEFECT_SEL_PROJECT(:V_V_DEFECT_GUID,:V_CURSOR)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+
+                statement.setString("V_V_DEFECT_GUID", v_defect_guid);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            public Map doInCallableStatement(CallableStatement cs)
+                    throws SQLException, DataAccessException {
+                cs.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) cs.getObject("V_CURSOR")));
+                return result;
+            }
+        });
+    }
 }

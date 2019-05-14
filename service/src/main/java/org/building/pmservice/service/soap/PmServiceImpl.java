@@ -63,7 +63,7 @@ public class PmServiceImpl implements PmService {
             List list = (List) retMap.get("list");
             for (int i = 0; i < list.size(); i++) {
                 Map map = (Map) list.get(i);
-                items.setVBILLADD(ProjectUrl+map.get("V_BILL_CODE").toString());
+                items.setVBILLADD(ProjectUrl + map.get("V_BILL_CODE").toString());
                 items.setVBILLCODE(map.get("V_BILL_CODE").toString());
                 items.setVCPZL(map.get("V_CPZL").toString());
                 items.setVDEFECTDATE(map.get("V_DEFECTDATE").toString());
@@ -149,11 +149,15 @@ public class PmServiceImpl implements PmService {
             List<DTJXWCJG.Items> list = new ArrayList<DTJXWCJG.Items>();
             DTJXWCJG.Items items = new DTJXWCJG.Items();
 
+            Map retmap = pmRepository.PRO_PM_DEFECT_SEL_PROJECT(mapEle.get("V_DEFECT_GUID").toString());
+            List rlist = (List) retmap.get("list");
+
+            Map emap = (Map) rlist.get(0);
 
             items.setVDEFECTGUID(mapEle.get("V_DEFECT_GUID").toString());
             items.setVDEFECTTYPE(mapEle.get("V_DEFECT_TYPE").toString());
-            items.setVSYSTEM(mapEle.get("V_SYSTEM").toString());
-            items.setVGUID(mapEle.get("V_GUID").toString());
+            items.setVSYSTEM(emap.get("V_SYSTEM").toString());
+            items.setVGUID(emap.get("FX_GUID").toString());
             items.setVSTR01(mapEle.get("V_STR01").toString());
             items.setVSTR02(mapEle.get("V_STR02").toString());
             items.setVSTR03(mapEle.get("V_STR03").toString());
@@ -258,7 +262,9 @@ public class PmServiceImpl implements PmService {
             bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
             bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
             bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm0010Url").toString());
+            System.out.println("-------------------系统名称--------------------");
 
+            System.out.println(dtdjqxcljg.getVSYSTEM());
             DTDJQXCLJGRet ret = soap.siDJQXCLJG(dtdjqxcljg);
 
             List<DTDJQXCLJGRet.ITEMS> retList = ret.getITEMS();
