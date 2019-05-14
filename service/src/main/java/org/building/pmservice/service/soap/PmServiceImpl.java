@@ -235,8 +235,8 @@ public class PmServiceImpl implements PmService {
                 V_V_SYSTEM = lmap.get("V_SYSTEM").toString();
                 dtdjqxcljg.setVSYSTEM(lmap.get("V_SYSTEM").toString());
 
-                items.setIID(lmap.get("V_GUID").toString());
-                if (lmap.get("V_STATECODE").toString().equals("30")) {
+                items.setIID(lmap.get("V_SOURCEID").toString());
+                if (lmap.get("V_STATECODE").toString().equals("30") || lmap.get("V_STATECODE").toString().equals("23")) {
                     items.setVSTATE("1");
                 } else {
                     items.setVSTATE("0");
@@ -270,7 +270,7 @@ public class PmServiceImpl implements PmService {
             List<DTDJQXCLJGRet.ITEMS> retList = ret.getITEMS();
 
             for (int j = 0; j < retList.size(); j++) {
-                DTDJQXCLJGRet.ITEMS retitems = new DTDJQXCLJGRet.ITEMS();
+                DTDJQXCLJGRet.ITEMS retitems = retList.get(j);
                 Element PackName = WriteDataRequest.addElement("items");
                 if (retitems.getVTYPE().equals("S")) {
                     result = pmRepository.WebServiceLog(V_V_SYSTEM, retitems.getVGUID(), "成功", "检修完成结果下传WebService成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "接口返回信息为：" + retitems.getVINFO());

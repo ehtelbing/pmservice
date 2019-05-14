@@ -39,7 +39,7 @@ public class DjServiceImpl implements DjService {
                                 qxEnity.getV_PERCODE(), qxEnity.getV_PERNAME(), qxEnity.getV_DEPTCODE(), qxEnity.getV_EQUCODE(), qxEnity.getV_IDEA(), qxEnity.getV_EQUSITE(), qxEnity.getV_EQUCHILDCODE(),
                                 qxEnity.getV_INPERCODE(), qxEnity.getV_INPERNAME(), qxEnity.getV_EQUTYPECODE(), qxEnity.getV_ORGCODE(), qxEnity.getV_BZ());
                         if (result.get("ret").equals("SUCCESS")) {
-                            r.setV_GUID(result.get("V_GUID").toString());
+                            r.setV_GUID(qxEnity.getI_ID());
                             r.setV_INFO("缺陷信息上传成功");
                             r.setV_TYPE("S");
                             wxjhRepository.WebServiceLog(djqxEnity.getV_SYSTEM(), qxEnity.getI_ID(), "成功", "点检缺陷信息上传WebService成功，信息插入成功！唯一值为缺陷ID" + qxEnity.getI_ID() + qxEnity.getV_SOURCEID());
