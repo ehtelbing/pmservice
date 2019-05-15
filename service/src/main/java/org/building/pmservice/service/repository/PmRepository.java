@@ -161,4 +161,28 @@ public class PmRepository {
             }
         });
     }
+
+    //PMPERPOW
+    public Map PRO_PM_PERCODE_SEL_POWER(String ROLECODE,String ORG){
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection cot) throws SQLException {
+                String sql = "{call PRO_PM_PERCODE_SEL_POWER(:ROLECODE,:ORG,:RET)}";
+                CallableStatement statement = cot.prepareCall(sql);
+                statement.setString("ROLECODE", ROLECODE);
+                statement.setString("ORG", ORG);
+                statement.registerOutParameter("RET", OracleTypes.CURSOR);
+                statement.registerOutParameter("RETTWO",OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result=new HashMap();
+                result.put("list",ResultHash((ResultSet) callableStatement.getObject("RET")));
+                result.put("mlist",ResultHash((ResultSet) callableStatement.getObject("RETTWO")));
+                return result;
+            }
+        });
+    }
 }
