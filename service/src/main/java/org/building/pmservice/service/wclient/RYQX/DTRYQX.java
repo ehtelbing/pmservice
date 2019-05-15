@@ -242,6 +242,9 @@ public class DTRYQX {
         return this.items;
     }
 
+    public void setItems(List<Items> items) {
+        this.items = items;
+    }
 
     /**
      * <p>anonymous complex type的 Java 类。

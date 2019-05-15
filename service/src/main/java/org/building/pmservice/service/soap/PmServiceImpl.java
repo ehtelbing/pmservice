@@ -304,36 +304,49 @@ public class PmServiceImpl implements PmService {
 
     //PMPERPOW
     @Override
-    public String PMPERPOW(String clientXml){
-        Map result=new HashMap();
-        Document root=DocumentHelper.createDocument();
-        Element writeDataRequest=root.addElement("RETItems");
-        Map<String,Object> mapEle=new HashMap<String,Object>();
-        String V_TEXT=null;
-        try{
-            Document doc=DocumentHelper.parseText(clientXml);
-            Element rootElt=doc.getRootElement();
-            List<Element> childElements=rootElt.elements();
+    public String PMPERPOW(String clientXml) {
+        Map result = new HashMap();
+        Document root = DocumentHelper.createDocument();
+        Element writeDataRequest = root.addElement("RETItems");
+        Map<String, Object> mapEle = new HashMap<String, Object>();
+        String V_TEXT = null;
+        try {
+            Document doc = DocumentHelper.parseText(clientXml);
+            Element rootElt = doc.getRootElement();
+            List<Element> childElements = rootElt.elements();
 
-            mapEle=getAllElements(childElements,mapEle);
+            mapEle = getAllElements(childElements, mapEle);
 
+            V_TEXT = mapEle.get("ROLECODE").toString() + ";" + mapEle.get("ORG").toString();
 
-            DTRYQX dtryqx=new DTRYQX();
-            List<DTRYQX.Items> list=new ArrayList<DTRYQX.Items>();
-            DTRYQX.Items items=new DTRYQX.Items();
+            DTRYQX dtryqx = new DTRYQX();
+
+            DTRYQX.Items items = new DTRYQX.Items();
 
             dtryqx.setVSYSTEM(mapEle.get("SYSTEM").toString());
 
-            Map retmap=pmRepository.PRO_PM_PERCODE_SEL_POWER(mapEle.get("ROLECODE").toString(),mapEle.get("ORG").toString());
-            List rlist=(List) retmap.get("list");
-            List mlist=(List) retmap.get("mlist");
+            Map retmap = pmRepository.PRO_PM_PERCODE_SEL_POWER(mapEle.get("ROLECODE").toString(), mapEle.get("ORG").toString());
+            List rlist = (List) retmap.get("list");
+            List mlist = (List) retmap.get("mlist");
 
-            for(int i=0;i<rlist.size();i++){
-                Map rmap=(Map) rlist.get(i);
+            URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
+            QName name = new QName("http://www.anshanmining.com/EAM_PM/", "SI_RYQX_Out_SynService");
+            SIRYQXOutSynService siryqxOutSynService = new SIRYQXOutSynService(url, name);
+            SIRYQXOutSyn soap = siryqxOutSynService.getSIRYQXOutSynPort();
+
+
+            BindingProvider bp = (BindingProvider) soap;
+            bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
+            bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
+            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm0014Url").toString());
+
+            for (int i = 0; i < rlist.size(); i++) {
+                List<DTRYQX.Items> list = new ArrayList<DTRYQX.Items>();
+                Map rmap = (Map) rlist.get(i);
                 dtryqx.setVUSERCODE(rmap.get("USERCODE").toString());
                 dtryqx.setVUSERNAME(rmap.get("USERNAME").toString());
-                for(int j=0;j<mlist.size();j++){
-                    Map mmap=(Map) mlist.get(i);
+                for (int j = 0; j < mlist.size(); j++) {
+                    Map mmap = (Map) mlist.get(i);
                     items.setVORG(rmap.get("DEPTNEWCODE").toString());
                     items.setVPOST(rmap.get("V_POST").toString());
                     items.setVROLE("");
@@ -344,41 +357,25 @@ public class PmServiceImpl implements PmService {
                     items.setVPORT("");
                     items.setVURL(mapEle.get("V_URL").toString());
                 }
+                list.add(items);
+                dtryqx.setItems(list);
+                DTRYQXRet ret = soap.siRYQX(dtryqx);
 
+                if (ret.getVTYPE().equals("S")) {
+                    result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "成功", "人员权限上传WebService成功，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
+
+                    writeDataRequest.addElement("type").setText(ret.getVTYPE());
+                    writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
+                    writeDataRequest.addElement("info").setText(ret.getVINFO());
+                } else {
+                    result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "失败", "人员权限上传WebService失败，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
+
+                    writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
+                    writeDataRequest.addElement("type").setText(ret.getVTYPE());
+                    writeDataRequest.addElement("info").setText(ret.getVINFO());
+                }
             }
-            list.add(items);
-//            dtryqx.setVUSERNAME();
-            V_TEXT=mapEle.get("ROLECODE").toString()+"+"+mapEle.get("ORG").toString();
-            URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
-            QName name = new QName("http://www.anshanmining.com/EAM_PM/", "SI_RYQX_Out_SynService");
-            SIRYQXOutSynService siryqxOutSynService = new SIRYQXOutSynService(url, name);
-            SIRYQXOutSyn soap = siryqxOutSynService.getSIRYQXOutSynPort();
-
-            BindingProvider bp = (BindingProvider) soap;
-            bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
-            bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
-            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm0014Url").toString());
-
-            DTRYQXRet ret = soap.siRYQX(dtryqx);
-
-            if (ret.getVTYPE().equals("S")) {
-                result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(),V_TEXT, "成功", "人员权限上传WebService成功，信息插入成功！角色+厂矿" + V_TEXT + "接口返回信息为：" + ret.getVINFO());
-
-                writeDataRequest.addElement("type").setText(ret.getVTYPE());
-                writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
-                writeDataRequest.addElement("info").setText(ret.getVINFO());
-            } else {
-                result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), V_TEXT, "失败", "人员权限上传WebService失败，信息插入成功！角色+厂矿" + V_TEXT + "接口返回信息为：" + ret.getVINFO());
-
-                writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
-                writeDataRequest.addElement("type").setText(ret.getVTYPE());
-                writeDataRequest.addElement("info").setText(ret.getVINFO());
-            }
-
-
-
-
-        }catch (Exception de) {
+        } catch (Exception de) {
             Element PackName = writeDataRequest.addElement("items");
             de.printStackTrace();
             result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), V_TEXT, "失败", "人员权限上传WebService失败，信息插入成功！角色+厂矿" + V_TEXT + "错误信息为：" + de.getMessage());
