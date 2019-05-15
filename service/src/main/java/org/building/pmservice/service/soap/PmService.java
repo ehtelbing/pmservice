@@ -21,4 +21,8 @@ public interface PmService {
     @WebMethod
     public String PM0010(@WebParam(targetNamespace = "http://soap.service.pmservice.building.org/", name = "clientXml") String clientXml);
 
+    //人员权限上传
+    @WebMethod
+    public String PMPERPOW(@WebParam(targetNamespace="http://soap.service.pmservice.building.org/",name="clientXml") String clientXml);
+
 }

@@ -9,6 +9,7 @@ import org.building.pmservice.service.wclient.JXWCJG.DTJXWCJG;
 import org.building.pmservice.service.wclient.JXWCJG.DTJXWCJGRet;
 import org.building.pmservice.service.wclient.JXWCJG.SIJXWCJGOutSyn;
 import org.building.pmservice.service.wclient.JXWCJG.SIJXWCJGOutSynService;
+import org.building.pmservice.service.wclient.RYQX.DTRYQX;
 import org.building.pmservice.service.wclient.WWQX.DTWWQX;
 import org.building.pmservice.service.wclient.WWQX.DTWWQXRet;
 import org.building.pmservice.service.wclient.WWQX.SIWWQXOutSyn;
@@ -295,6 +296,71 @@ public class PmServiceImpl implements PmService {
             PackName.addElement("info").setText(e.getMessage());
         }
         return root.asXML();
+    }
+
+
+    //PMPERPOW
+    @Override
+    public String PMPERPOW(String clientXml){
+        Map result=new HashMap();
+        Document root=DocumentHelper.createDocument();
+        Element writeDataRequest=root.addElement("RETItems");
+        Map<String,Object> mapEle=new HashMap<String,Object>();
+
+        try{
+            Document doc=DocumentHelper.parseText(clientXml);
+            Element rootElt=doc.getRootElement();
+            List<Element> childElements=rootElt.elements();
+
+            mapEle=getAllElements(childElements,mapEle);
+
+
+            DTRYQX dtryqx=new DTRYQX();
+            List<DTRYQX.Items> list=new ArrayList<DTRYQX.Items>();
+            DTRYQX.Items items=new DTRYQX.Items();
+
+            dtryqx.setVSYSTEM(mapEle.get("SYSTEM").toString());
+
+            Map retmap=pmRepository.PRO_PM_PERCODE_SEL_POWER(mapEle.get("ROLECODE").toString(),mapEle.get("ORG").toString());
+            List rlist=(List) retmap.get("list");
+            List mlist=(List) retmap.get("mlist");
+
+            for(int i=0;i<rlist.size();i++){
+                Map rmap=(Map) rlist.get(i);
+                dtryqx.setVUSERCODE(rmap.get("USERCODE").toString());
+                dtryqx.setVUSERNAME(rmap.get("USERNAME").toString());
+                for(int j=0;j<mlist.size();j++){
+                    Map mmap=(Map) mlist.get(i);
+                    items.setVORG(rmap.get("DEPTNEWCODE").toString());
+                    items.setVPOST(rmap.get("V_POST").toString());
+                    items.setVROLE("");
+                    items.setVMENUID(mmap.get("v_menucode").toString());
+                    items.setVMENUDESC(mmap.get("v_menuname").toString());
+                    items.setVUPMENUD(mmap.get("v_menucode_up").toString());
+                    items.setVIP(mapEle.get("V_IP").toString());
+                    items.setVPORT("");
+                    items.setVURL(mapEle.get("V_URL").toString());
+                }
+
+            }
+            list.add(items);
+
+
+            URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
+            QName name = new QName("http://www.anshanmining.com/EAM_PM/", "SI_DTRYQX_Out_SynService");
+            SIDJQXCLJGOutSynService sidjqxcljgOutSynService = new SIDJQXCLJGOutSynService(url, name);
+            SIDJQXCLJGOutSyn soap = sidjqxcljgOutSynService.getSIDJQXCLJGOutSynPort();
+
+
+
+
+
+
+        }catch (Exception de) {
+            de.printStackTrace();
+        }
+        return null;
+
     }
 
     private Map<String, Object> getAllElements(List<Element> childElements, Map<String, Object> mapEle) {
