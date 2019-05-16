@@ -166,7 +166,7 @@ public class PmRepository {
     public Map PRO_PM_PERCODE_SEL_POWER(String ROLECODE,String ORG){
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection cot) throws SQLException {
-                String sql = "{call PRO_PM_PERCODE_SEL_POWER(:ROLECODE,:ORG,:RET)}";
+                String sql = "{call PRO_PM_PERCODE_SEL_POWER(:ROLECODE,:ORG,:RET,:RETTWO)}";
                 CallableStatement statement = cot.prepareCall(sql);
                 statement.setString("ROLECODE", ROLECODE);
                 statement.setString("ORG", ORG);

@@ -321,15 +321,13 @@ public class PmServiceImpl implements PmService {
 
             DTRYQX dtryqx = new DTRYQX();
 
-            DTRYQX.Items items = new DTRYQX.Items();
-
             dtryqx.setVSYSTEM(mapEle.get("SYSTEM").toString());
 
             Map retmap = pmRepository.PRO_PM_PERCODE_SEL_POWER(mapEle.get("ROLECODE").toString(), mapEle.get("ORG").toString());
             List rlist = (List) retmap.get("list");
             List mlist = (List) retmap.get("mlist");
 
-            URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
+           /* URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
             QName name = new QName("http://www.anshanmining.com/EAM_PM/", "SI_RYQX_Out_SynService");
             SIRYQXOutSynService siryqxOutSynService = new SIRYQXOutSynService(url, name);
             SIRYQXOutSyn soap = siryqxOutSynService.getSIRYQXOutSynPort();
@@ -338,7 +336,7 @@ public class PmServiceImpl implements PmService {
             BindingProvider bp = (BindingProvider) soap;
             bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
             bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
-            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm0014Url").toString());
+            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("PmperpowUrl").toString());*/
 
             for (int i = 0; i < rlist.size(); i++) {
                 List<DTRYQX.Items> list = new ArrayList<DTRYQX.Items>();
@@ -346,20 +344,22 @@ public class PmServiceImpl implements PmService {
                 dtryqx.setVUSERCODE(rmap.get("USERCODE").toString());
                 dtryqx.setVUSERNAME(rmap.get("USERNAME").toString());
                 for (int j = 0; j < mlist.size(); j++) {
-                    Map mmap = (Map) mlist.get(i);
+                    Map mmap = (Map) mlist.get(j);
+                    DTRYQX.Items items = new DTRYQX.Items();
                     items.setVORG(rmap.get("DEPTNEWCODE").toString());
-                    items.setVPOST(rmap.get("V_POST").toString());
-                    items.setVROLE("");
-                    items.setVMENUID(mmap.get("v_menucode").toString());
-                    items.setVMENUDESC(mmap.get("v_menuname").toString());
-                    items.setVUPMENUD(mmap.get("v_menucode_up").toString());
+                    items.setVPOST("");
+                    items.setVROLE(mapEle.get("ROLECODE").toString());
+                    items.setVMENUID(mmap.get("V_MENUCODE").toString());
+                    items.setVMENUDESC(mmap.get("V_MENUNAME").toString());
+                    items.setVUPMENUD(mmap.get("V_MENUCODE_UP").toString());
                     items.setVIP(mapEle.get("V_IP").toString());
                     items.setVPORT("");
-                    items.setVURL(mapEle.get("V_URL").toString());
+                    items.setVURL(mapEle.get("V_URL").toString()+mmap.get("V_URL").toString());
+                    list.add(items);
                 }
-                list.add(items);
                 dtryqx.setItems(list);
-                DTRYQXRet ret = soap.siRYQX(dtryqx);
+                System.out.println(dtryqx);
+               /* DTRYQXRet ret = soap.siRYQX(dtryqx);
 
                 if (ret.getVTYPE().equals("S")) {
                     result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "成功", "人员权限上传WebService成功，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
@@ -373,7 +373,7 @@ public class PmServiceImpl implements PmService {
                     writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                     writeDataRequest.addElement("type").setText(ret.getVTYPE());
                     writeDataRequest.addElement("info").setText(ret.getVINFO());
-                }
+                }*/
             }
         } catch (Exception de) {
             Element PackName = writeDataRequest.addElement("items");
