@@ -10,7 +10,7 @@ import javax.xml.namespace.QName;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the com.anmining.tengxiaoxu package. 
+ * generated in the com.anshanmining.use_check package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _MTRYQXRet_QNAME = new QName("http://www.anmining.com/tengxiaoxu/", "MT_RYQXRet");
-    private final static QName _MTRYQX_QNAME = new QName("http://www.anmining.com/tengxiaoxu/", "MT_RYQX");
+    private final static QName _MTRYQXRet_QNAME = new QName("http://www.anshanmining.com/use_check/", "MT_RYQXRet");
+    private final static QName _MTRYQX_QNAME = new QName("http://www.anshanmining.com/use_check/", "MT_RYQX");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.anmining.tengxiaoxu
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.anshanmining.use_check
      * 
      */
     public ObjectFactory() {
@@ -62,7 +62,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link DTRYQXRet }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.anmining.com/tengxiaoxu/", name = "MT_RYQXRet")
+    @XmlElementDecl(namespace = "http://www.anshanmining.com/use_check/", name = "MT_RYQXRet")
     public JAXBElement<DTRYQXRet> createMTRYQXRet(DTRYQXRet value) {
         return new JAXBElement<DTRYQXRet>(_MTRYQXRet_QNAME, DTRYQXRet.class, null, value);
     }
@@ -71,7 +71,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link DTRYQX }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.anmining.com/tengxiaoxu/", name = "MT_RYQX")
+    @XmlElementDecl(namespace = "http://www.anshanmining.com/use_check/", name = "MT_RYQX")
     public JAXBElement<DTRYQX> createMTRYQX(DTRYQX value) {
         return new JAXBElement<DTRYQX>(_MTRYQX_QNAME, DTRYQX.class, null, value);
     }

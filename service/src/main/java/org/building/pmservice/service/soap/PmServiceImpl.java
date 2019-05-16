@@ -304,7 +304,7 @@ public class PmServiceImpl implements PmService {
 
     //PMPERPOW
     @Override
-    public String PMPERPOW(String clientXml) {
+    public String PR1003(String clientXml) {
         Map result = new HashMap();
         Document root = DocumentHelper.createDocument();
         Element writeDataRequest = root.addElement("RETItems");
@@ -318,31 +318,19 @@ public class PmServiceImpl implements PmService {
             mapEle = getAllElements(childElements, mapEle);
 
             V_TEXT = mapEle.get("ROLECODE").toString() + ";" + mapEle.get("ORG").toString();
-
-            DTRYQX dtryqx = new DTRYQX();
-
-            dtryqx.setVSYSTEM(mapEle.get("SYSTEM").toString());
-
             Map retmap = pmRepository.PRO_PM_PERCODE_SEL_POWER(mapEle.get("ROLECODE").toString(), mapEle.get("ORG").toString());
             List rlist = (List) retmap.get("list");
             List mlist = (List) retmap.get("mlist");
 
-           /* URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
-            QName name = new QName("http://www.anshanmining.com/EAM_PM/", "SI_RYQX_Out_SynService");
-            SIRYQXOutSynService siryqxOutSynService = new SIRYQXOutSynService(url, name);
-            SIRYQXOutSyn soap = siryqxOutSynService.getSIRYQXOutSynPort();
-
-
-            BindingProvider bp = (BindingProvider) soap;
-            bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
-            bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
-            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("PmperpowUrl").toString());*/
-
             for (int i = 0; i < rlist.size(); i++) {
+
                 List<DTRYQX.Items> list = new ArrayList<DTRYQX.Items>();
                 Map rmap = (Map) rlist.get(i);
+                DTRYQX dtryqx = new DTRYQX();
+                dtryqx.setVSYSTEM(mapEle.get("SYSTEM").toString());
                 dtryqx.setVUSERCODE(rmap.get("USERCODE").toString());
                 dtryqx.setVUSERNAME(rmap.get("USERNAME").toString());
+
                 for (int j = 0; j < mlist.size(); j++) {
                     Map mmap = (Map) mlist.get(j);
                     DTRYQX.Items items = new DTRYQX.Items();
@@ -354,12 +342,43 @@ public class PmServiceImpl implements PmService {
                     items.setVUPMENUD(mmap.get("V_MENUCODE_UP").toString());
                     items.setVIP(mapEle.get("V_IP").toString());
                     items.setVPORT("");
-                    items.setVURL(mapEle.get("V_URL").toString()+mmap.get("V_URL").toString());
+                    if (mmap.get("V_URL").toString().equals("")) {
+                        items.setVURL("");
+                    } else if (mmap.get("V_URL").toString().indexOf("http") == -1) {
+                        items.setVURL(mapEle.get("V_URL").toString() + mmap.get("V_URL").toString());
+                    } else {
+                        items.setVURL(mmap.get("V_URL").toString());
+                    }
+
                     list.add(items);
                 }
                 dtryqx.setItems(list);
-                System.out.println(dtryqx);
-               /* DTRYQXRet ret = soap.siRYQX(dtryqx);
+
+                System.out.println("--------------------打印开始---------------------");
+                System.out.println(dtryqx.getVSYSTEM());
+                System.out.println(dtryqx.getVUSERCODE());
+                System.out.println(dtryqx.getVUSERNAME());
+                System.out.println(list.get(0).getVIP());
+                System.out.println(list.get(0).getVMENUDESC());
+                System.out.println(list.get(0).getVMENUID());
+                System.out.println(list.get(0).getVORG());
+                System.out.println(list.get(0).getVPORT());
+                System.out.println(list.get(0).getVPOST());
+                System.out.println(list.get(0).getVUPMENUD());
+                System.out.println(list.get(0).getVURL());
+                System.out.println("--------------------打印结束---------------------");
+
+                URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
+                QName name = new QName("http://www.anshanmining.com/use_check/", "SI_RYQX_Out_SynService");
+                SIRYQXOutSynService siryqxOutSynService = new SIRYQXOutSynService(url, name);
+                SIRYQXOutSyn soap = siryqxOutSynService.getSIRYQXOutSynPort();
+
+
+                BindingProvider bp = (BindingProvider) soap;
+                bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
+                bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
+                bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("PR1003Url").toString());
+                DTRYQXRet ret = soap.siRYQX(dtryqx);
 
                 if (ret.getVTYPE().equals("S")) {
                     result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "成功", "人员权限上传WebService成功，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
@@ -373,7 +392,7 @@ public class PmServiceImpl implements PmService {
                     writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                     writeDataRequest.addElement("type").setText(ret.getVTYPE());
                     writeDataRequest.addElement("info").setText(ret.getVINFO());
-                }*/
+                }
             }
         } catch (Exception de) {
             Element PackName = writeDataRequest.addElement("items");
