@@ -111,14 +111,14 @@ public class PmServiceImpl implements PmService {
             DTWWQXRet ret = soap.siWWQX(dtwwqx);
 
             if (ret.getVTYPE().equals("S")) {
-                result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "成功", "检修完成结果下传WebService成功，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "接口返回信息数量为：" + dtwwqx.getItems().size());
+                result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "成功", "委外缺陷信息下传WebService：SI_WWQX_Out_Syn_PM0011成功，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "接口返回信息数量为：" + dtwwqx.getItems().size());
 
                 WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
                 WriteDataRequest.addElement("info").setText(ret.getVINFO());
 
             } else {
-                result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "接口返回信息数量为：" + dtwwqx.getItems().size());
+                result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "失败", "委外缺陷信息下传WebService：SI_WWQX_Out_Syn_PM0011失败，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "接口返回信息数量为：" + dtwwqx.getItems().size());
 
                 WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
@@ -127,7 +127,7 @@ public class PmServiceImpl implements PmService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "错误信息为：" + e.getMessage());
+            result = pmRepository.WebServiceLog("AKSB", mapEle.get("XML").toString(), "失败", "委外缺陷信息下传WebService：SI_WWQX_Out_Syn_PM0011失败，信息插入成功！唯一值为维修计划申请guid" + mapEle.get("XML").toString() + "错误信息为：" + e.getMessage());
 
             WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
             WriteDataRequest.addElement("type").setText("E");
@@ -186,13 +186,13 @@ public class PmServiceImpl implements PmService {
             DTJXWCJGRet ret = soap.siJXWCJG(dtjxwcjg);
 
             if (ret.getVTYPE().equals("S")) {
-                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "成功", "检修完成结果下传WebService成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
+                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "成功", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
 
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
                 WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("info").setText(ret.getVINFO());
             } else {
-                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
+                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
 
                 WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
@@ -200,7 +200,7 @@ public class PmServiceImpl implements PmService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "错误信息为：" + e.getMessage());
+            result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "错误信息为：" + e.getMessage());
 
             WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
             WriteDataRequest.addElement("type").setText("E");
@@ -277,12 +277,12 @@ public class PmServiceImpl implements PmService {
                 DTDJQXCLJGRet.ITEMS retitems = retList.get(j);
                 Element PackName = WriteDataRequest.addElement("items");
                 if (retitems.getVTYPE().equals("S")) {
-                    result = pmRepository.WebServiceLog(V_V_SYSTEM, retitems.getVGUID(), "成功", "检修完成结果下传WebService成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "接口返回信息为：" + retitems.getVINFO());
+                    result = pmRepository.WebServiceLog(V_V_SYSTEM, retitems.getVGUID(), "成功", "点检缺陷处理结果反馈WebService：SI_DJQXCLJG_Out_Syn_PM0010成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "接口返回信息为：" + retitems.getVINFO());
                     PackName.addElement("type").setText(retitems.getVTYPE());
                     PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
                     PackName.addElement("info").setText(retitems.getVINFO());
                 } else {
-                    result = pmRepository.WebServiceLog(V_V_SYSTEM, retitems.getVGUID(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "接口返回信息为：" + retitems.getVINFO());
+                    result = pmRepository.WebServiceLog(V_V_SYSTEM, retitems.getVGUID(), "失败", "点检缺陷处理结果反馈WebService：SI_DJQXCLJG_Out_Syn_PM0010失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "接口返回信息为：" + retitems.getVINFO());
                     PackName.addElement("type").setText(retitems.getVTYPE());
                     PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
                     PackName.addElement("info").setText(retitems.getVINFO());
@@ -292,7 +292,7 @@ public class PmServiceImpl implements PmService {
         } catch (Exception e) {
             Element PackName = WriteDataRequest.addElement("items");
             e.printStackTrace();
-            result = pmRepository.WebServiceLog(V_V_SYSTEM, mapEle.get("GUID").toString(), "失败", "检修完成结果下传WebService失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "错误信息为：" + e.getMessage());
+            result = pmRepository.WebServiceLog(V_V_SYSTEM, mapEle.get("GUID").toString(), "失败", "点检缺陷处理结果反馈WebService：SI_DJQXCLJG_Out_Syn_PM0010失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("GUID").toString() + "错误信息为：" + e.getMessage());
 
             PackName.addElement("type").setText("E");
             PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
@@ -381,13 +381,13 @@ public class PmServiceImpl implements PmService {
                 DTRYQXRet ret = soap.siRYQX(dtryqx);
 
                 if (ret.getVTYPE().equals("S")) {
-                    result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "成功", "人员权限上传WebService成功，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
+                    result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "成功", "人员权限上传WebService：SI_RYQX_Out_Syn_PR1003成功，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
 
                     writeDataRequest.addElement("type").setText(ret.getVTYPE());
                     writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                     writeDataRequest.addElement("info").setText(ret.getVINFO());
                 } else {
-                    result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "失败", "人员权限上传WebService失败，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
+                    result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), ret.getVUSERCODE(), "失败", "人员权限上传WebService：SI_RYQX_Out_Syn_PR1003失败，信息插入成功！员工号为" + ret.getVUSERCODE() + "接口返回信息为：" + ret.getVINFO());
 
                     writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                     writeDataRequest.addElement("type").setText(ret.getVTYPE());
@@ -397,7 +397,7 @@ public class PmServiceImpl implements PmService {
         } catch (Exception de) {
             Element PackName = writeDataRequest.addElement("items");
             de.printStackTrace();
-            result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), V_TEXT, "失败", "人员权限上传WebService失败，信息插入成功！角色+厂矿" + V_TEXT + "错误信息为：" + de.getMessage());
+            result = pmRepository.WebServiceLog(mapEle.get("SYSTEM").toString(), V_TEXT, "失败", "人员权限上传WebService：SI_RYQX_Out_Syn_PR1003失败，信息插入成功！角色+厂矿" + V_TEXT + "错误信息为：" + de.getMessage());
 
             PackName.addElement("type").setText("E");
             PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
