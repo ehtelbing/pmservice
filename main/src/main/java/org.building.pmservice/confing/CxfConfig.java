@@ -37,6 +37,9 @@ public class CxfConfig {
     private DjService djService;
 
     @Autowired
+    private MonthService monthService;
+
+    @Autowired
     private Bus bus;
     //终端路径
 
@@ -76,6 +79,14 @@ public class CxfConfig {
     public Endpoint DjServicePoint() {
         EndpointImpl endpointApp = new EndpointImpl(bus, djService);
         endpointApp.publish("/DjService");
+        return endpointApp;
+    }
+
+    //终端路径
+    @Bean
+    public Endpoint MonthServicePoint() {
+        EndpointImpl endpointApp = new EndpointImpl(bus, monthService);
+        endpointApp.publish("/MonthService");
         return endpointApp;
     }
 
