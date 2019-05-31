@@ -45,6 +45,7 @@ public class DjServiceImpl implements DjService {
                             wxjhRepository.WebServiceLog(djqxEnity.getV_SYSTEM(), qxEnity.getI_ID(), "成功", "点检缺陷信息上传WebService成功，信息插入成功！唯一值为缺陷ID" + qxEnity.getI_ID() + qxEnity.getV_SOURCEID());
                         } else {
                             wxjhRepository.WebServiceLog(djqxEnity.getV_SYSTEM(), qxEnity.getI_ID(), "失败", "点检缺陷信息上传WebService成功，信息插入失败！唯一值为缺陷ID" + qxEnity.getI_ID() + qxEnity.getV_SOURCEID());
+                            r.setV_GUID(qxEnity.getI_ID());
                             r.setV_INFO("缺陷信息上传成功，插入失败");
                             r.setV_TYPE("S");
                         }
