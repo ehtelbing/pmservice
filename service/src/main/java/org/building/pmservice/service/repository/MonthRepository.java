@@ -73,7 +73,7 @@ public class MonthRepository {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
-                String sql = "{call PRO_MONTH_DATA_DOWNLOAD(:DATE_START,:DATE_END,:V_ORG_CODE,:V_DEPT_CODE,:RET)}";
+                String sql = "{call PRO_MONTH_DATA_DOWNLOAD(:DATE_START,:DATE_END,:V_ORG_CODE,:V_DEPT_CODE,:INFO,:RET)}";
 
                 CallableStatement statement = con.prepareCall(sql);
 
@@ -82,6 +82,7 @@ public class MonthRepository {
                 statement.setString("V_ORG_CODE", V_ORG_CODE);
                 statement.setString("V_DEPT_CODE", V_DEPT_CODE);
 
+                statement.registerOutParameter("INFO", OracleTypes.VARCHAR);
                 statement.registerOutParameter("RET", OracleTypes.CURSOR);
                 return statement;
             }
@@ -90,8 +91,8 @@ public class MonthRepository {
             public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
                 callableStatement.execute();
                 Map result=new HashMap();
-                result.put("list",ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
-                result.put("RET",(String) callableStatement.getString("RET"));
+                result.put("list",ResultHash((ResultSet) callableStatement.getObject("RET")));
+                result.put("RET",(String) callableStatement.getString("INFO"));
                 return result;
             }
         });

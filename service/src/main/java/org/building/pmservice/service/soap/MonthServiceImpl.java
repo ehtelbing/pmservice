@@ -33,15 +33,13 @@ public class MonthServiceImpl implements MonthService {
             ret.setV_DEPTCODE(items.getV_DEPT_CODE());
             ret.setV_ORGCODE(items.getV_ORG_CODE());
             ret.setSYSNAME("SBGL");
-            Map result = new HashMap();
-            List mlist = new ArrayList();
 
-            result = monthRepository.OutMonthData(items.getV_YEAR(), items.getV_MONTH(), items.getV_ORG_CODE(), items.getV_DEPT_CODE());
-            if(result.get("RET").equals("SUCCESS")) {
-                if (result.size() > 0) {
+            Map result = monthRepository.OutMonthData(items.getV_YEAR(), items.getV_MONTH(), items.getV_ORG_CODE(), items.getV_DEPT_CODE());
+            if (result.size() > 0) {
+                if (result.get("RET").equals("SUCCESS")) {
                     List<MonthxcLReturnEnity> lists = new ArrayList<>();
-                    mlist = (List) result.get("list");
-                    for (int m = 0; m < result.size(); m++) {
+                    List mlist = (List) result.get("list");
+                    for (int m = 0; m < mlist.size(); m++) {
                         Map cmap = (Map) mlist.get(m);
                         MonthxcLReturnEnity monthxcLReturnEnity = new MonthxcLReturnEnity();
 
@@ -66,21 +64,23 @@ public class MonthServiceImpl implements MonthService {
                         monthxcLReturnEnity.setV_FLAG(cmap.get("V_FLAG").toString());
                         monthxcLReturnEnity.setV_OPERANAME(cmap.get("V_OPERANAME").toString());
 
-                        monthxcLReturnEnity.setV_ADJUST(cmap.get("").toString());
-                        monthxcLReturnEnity.setV_STR01(cmap.get("").toString());
-                        monthxcLReturnEnity.setV_STR02(cmap.get("").toString());
-                        monthxcLReturnEnity.setV_STR03(cmap.get("").toString());
-                        monthxcLReturnEnity.setV_STR04(cmap.get("").toString());
-                        monthxcLReturnEnity.setV_STR05(cmap.get("").toString());
+                        if(cmap.get("V_ADJUST").toString().equals("1")){
+                            monthxcLReturnEnity.setV_ADJUST("是");
+                        }else{
+                            monthxcLReturnEnity.setV_ADJUST("否");
+                        }
+
                         lists.add(monthxcLReturnEnity);
                     }
+                    ret.setV_INFO("成功！");
+                    ret.setV_TYPE("S");
                     ret.setItems(lists);
                     wxjhRepository.WebServiceLog(items.getV_SYSTEM(), "", "成功", "月计划" + items.getV_YEAR() + "年" + items.getV_MONTH() + "月" + items.getV_ORG_CODE() + "厂矿" + items.getV_DEPT_CODE() + "作业区成功返回" + result.size());
                 } else {
                     wxjhRepository.WebServiceLog(items.getV_SYSTEM(), "", "成功", "月计划" + items.getV_YEAR() + "年" + items.getV_MONTH() + "月" + items.getV_ORG_CODE() + "厂矿" + items.getV_DEPT_CODE() + "作业区成功返回" + result.size());
                 }
-            }else{
-                    wxjhRepository.WebServiceLog(items.getV_SYSTEM(), "", "失败", "月计划" + items.getV_YEAR() + "年" + items.getV_MONTH() + "月" + items.getV_ORG_CODE() + "厂矿" + items.getV_DEPT_CODE() + "作业区失败返回" + result.size());
+            } else {
+                wxjhRepository.WebServiceLog(items.getV_SYSTEM(), "", "失败", "月计划" + items.getV_YEAR() + "年" + items.getV_MONTH() + "月" + items.getV_ORG_CODE() + "厂矿" + items.getV_DEPT_CODE() + "作业区失败返回" + result.size());
                 ret.setV_INFO("失败！");
                 ret.setV_TYPE("E");
             }
@@ -89,8 +89,7 @@ public class MonthServiceImpl implements MonthService {
             ret.setV_INFO(e.getMessage());
             ret.setV_TYPE("E");
         }
-        ret.setV_INFO("成功！");
-        ret.setV_TYPE("S");
+
         return ret;
     }
 }
