@@ -117,11 +117,11 @@ public class WxjhRepository {
         });
     }
 
-    public String DefectBack(String V_V_DEFECT_GUID, String V_V_BILL_CODE, String V_V_DEFECT_TYPE, String V_V_GUID) {
+    public String DefectBack(String V_V_DEFECT_GUID, String V_V_BILL_CODE, String V_V_DEFECT_TYPE, String V_V_GUID,String V_V_STR01) {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
-                String sql = "{call PM_DEFECT_PRODECT_DEL(:V_V_DEFECTGUID,:V_V_BILL_CODE,:V_V_DEFECTTYPE,:V_V_GUID,:V_INFO)}";
+                String sql = "{call PM_DEFECT_PRODECT_DEL(:V_V_DEFECTGUID,:V_V_BILL_CODE,:V_V_DEFECTTYPE,:V_V_GUID,:V_V_STR01,:V_INFO)}";
 
                 CallableStatement statement = con.prepareCall(sql);
 
@@ -129,6 +129,7 @@ public class WxjhRepository {
                 statement.setString("V_V_BILL_CODE", V_V_BILL_CODE);
                 statement.setString("V_V_DEFECT_TYPE", V_V_DEFECT_TYPE);
                 statement.setString("V_V_GUID", V_V_GUID);
+                statement.setString("V_V_STR01", V_V_STR01);
                 statement.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
                 return statement;
             }

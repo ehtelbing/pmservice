@@ -62,11 +62,11 @@ public class PmServiceImpl implements PmService {
 
             DTWWQX dtwwqx = new DTWWQX();
             List<DTWWQX.Items> dlist = new ArrayList<DTWWQX.Items>();
-            DTWWQX.Items items = new DTWWQX.Items();
 
             List list = (List) retMap.get("list");
             for (int i = 0; i < list.size(); i++) {
                 Map map = (Map) list.get(i);
+                DTWWQX.Items items = new DTWWQX.Items();
                 items.setVBILLADD(ProjectUrl + map.get("V_BILL_CODE").toString());
                 items.setVBILLCODE(map.get("V_BILL_CODE").toString());
                 items.setVCPZL(map.get("V_CPZL").toString());
@@ -226,16 +226,13 @@ public class PmServiceImpl implements PmService {
             DTDJQXCLJG dtdjqxcljg = new DTDJQXCLJG();
             List<DTDJQXCLJG.ITEMS> list = dtdjqxcljg.getITEMS();
 
-            DTDJQXCLJG.ITEMS items = new DTDJQXCLJG.ITEMS();
-
             Map map = pmRepository.PRO_PM_DEFECT_SEL_GUID(mapEle.get("GUID").toString());
 
             List mlist = (List) map.get("list");
 
-
             for (int i = 0; i < mlist.size(); i++) {
                 Map lmap = (Map) mlist.get(i);
-
+                DTDJQXCLJG.ITEMS items = new DTDJQXCLJG.ITEMS();
                 V_V_SYSTEM = lmap.get("V_SYSTEM").toString();
                 dtdjqxcljg.setVSYSTEM(lmap.get("V_SYSTEM").toString());
 
@@ -251,9 +248,8 @@ public class PmServiceImpl implements PmService {
                 items.setVSTR03("");
                 items.setVSTR04("");
                 items.setVSTR05("");
+                list.add(items);
             }
-            list.add(items);
-
             dtdjqxcljg.setItems(list);
 
             URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());

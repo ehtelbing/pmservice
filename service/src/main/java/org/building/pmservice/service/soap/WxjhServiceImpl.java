@@ -61,7 +61,7 @@ public class WxjhServiceImpl implements WxjhService {
                     WwqxbhEnity w = items.get(i);
                     try {
 
-                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID());
+                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID(),w.getV_STR01());
                         if (result.equals("SUCCESS")) {
                             wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "成功", "外委维修计划缺陷驳回WebService成功，信息插入成功！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                         } else {
@@ -92,7 +92,7 @@ public class WxjhServiceImpl implements WxjhService {
                     WwjsqxjgEnity w = items.get(i);
                     try {
 
-                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID());
+                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID(),w.getV_STR01());
                         if (result.equals("SUCCESS")) {
                             wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "成功", "委外竣工（决算）结果上传WebService成功，信息插入成功！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                         } else {
