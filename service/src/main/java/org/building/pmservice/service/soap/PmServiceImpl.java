@@ -153,21 +153,15 @@ public class PmServiceImpl implements PmService {
             List<DTJXWCJG.Items> list = new ArrayList<DTJXWCJG.Items>();
             DTJXWCJG.Items items = new DTJXWCJG.Items();
 
-            Map retmap = pmRepository.PRO_PM_DEFECT_SEL_PROJECT(mapEle.get("V_DEFECT_GUID").toString());
+            Map retmap = pmRepository.maintain_by_defect_sel_dguid(mapEle.get("V_DEFECT_GUID").toString());
             List rlist = (List) retmap.get("list");
 
             Map emap = (Map) rlist.get(0);
 
             items.setVDEFECTGUID(mapEle.get("V_DEFECT_GUID").toString());
             items.setVDEFECTTYPE(mapEle.get("V_DEFECT_TYPE").toString());
-            items.setVSYSTEM(emap.get("V_SYSTEM").toString());
+            items.setVSYSTEM(mapEle.get("V_SYSTEM").toString());
             items.setVGUID(emap.get("FX_GUID").toString());
-            items.setVSTR01(mapEle.get("V_STR01").toString());
-            items.setVSTR02(mapEle.get("V_STR02").toString());
-            items.setVSTR03(mapEle.get("V_STR03").toString());
-            items.setVSTR04(mapEle.get("V_STR04").toString());
-            items.setVSTR05(mapEle.get("V_STR05").toString());
-
             list.add(items);
 
             dtjxwcjg.setItems(list);

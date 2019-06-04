@@ -139,15 +139,15 @@ public class PmRepository {
         });
     }
 
-    public Map PRO_PM_DEFECT_SEL_PROJECT(String v_defect_guid) {
+    public Map maintain_by_defect_sel_dguid(String V_V_DEFECTGUID) {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
-                String sql = "{call PRO_PM_DEFECT_SEL_PROJECT(:V_V_DEFECT_GUID,:V_CURSOR)}";
+                String sql = "{call maintain_by_defect_sel_dguid(:V_V_DEFECTGUID,:V_CURSOR)}";
 
                 CallableStatement statement = con.prepareCall(sql);
 
-                statement.setString("V_V_DEFECT_GUID", v_defect_guid);
+                statement.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
                 statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
                 return statement;
             }
