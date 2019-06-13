@@ -75,4 +75,27 @@ public class DjRepository {
         });
     }
 
+    public Map ImportSapWorkOrder(String WorkOrderId,String SapWorkOrderId) {
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PRO_SAP_WORKORDER_IMPORT(:V_V_WorkOrderId,:V_V_SapWorkOrderId,:V_INFO)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_V_WorkOrderId", WorkOrderId);
+                statement.setString("V_V_SapWorkOrderId", SapWorkOrderId);
+                statement.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            public Map doInCallableStatement(CallableStatement cs)
+                    throws SQLException, DataAccessException {
+                cs.execute();
+                Map result=new HashMap();
+                result.put("ret",cs.getObject("V_INFO").toString());
+                return result;
+            }
+        });
+    }
+
 }

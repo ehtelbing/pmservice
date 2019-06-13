@@ -13,6 +13,9 @@ import org.building.pmservice.service.wclient.RYQX.DTRYQX;
 import org.building.pmservice.service.wclient.RYQX.DTRYQXRet;
 import org.building.pmservice.service.wclient.RYQX.SIRYQXOutSyn;
 import org.building.pmservice.service.wclient.RYQX.SIRYQXOutSynService;
+import org.building.pmservice.service.wclient.SpotChkProj.DTSPOTCHECKPROJ;
+import org.building.pmservice.service.wclient.SpotChkProj.SISpotChkProjIn;
+import org.building.pmservice.service.wclient.SpotChkProj.SISpotChkProjInService;
 import org.building.pmservice.service.wclient.WWQX.DTWWQX;
 import org.building.pmservice.service.wclient.WWQX.DTWWQXRet;
 import org.building.pmservice.service.wclient.WWQX.SIWWQXOutSyn;
@@ -26,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
+import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import java.net.MalformedURLException;
@@ -291,7 +295,6 @@ public class PmServiceImpl implements PmService {
         return root.asXML();
     }
 
-
     //PMPERPOW
     @Override
     public String PR1003(String clientXml) {
@@ -392,6 +395,76 @@ public class PmServiceImpl implements PmService {
             PackName.addElement("type").setText("E");
             PackName.addElement("V_INFO").setText(result.get("V_INFO").toString());
             PackName.addElement("info").setText(de.getMessage());
+        }
+        return root.asXML();
+
+    }
+
+    @Override
+    public String PM1001(String clientXml) {
+        Map result = new HashMap();
+        Document root = DocumentHelper.createDocument();
+        Element writeDataRequest = root.addElement("RETItems");
+        Map<String, Object> mapEle = new HashMap<String, Object>();
+
+        DTSPOTCHECKPROJ dtspotcheckproj = new DTSPOTCHECKPROJ();
+        try {
+            Document doc = DocumentHelper.parseText(clientXml);
+            Element rootElt = doc.getRootElement();
+            List<Element> childElements = rootElt.elements();
+
+            mapEle = getAllElements(childElements, mapEle);
+
+            Map map = pmRepository.PRO_PM_WORKORDER_GET(mapEle.get("ORDERGUID").toString());
+
+            List mlist = (List) map.get("list");
+
+            if (mlist.size() > 0) {
+                Map lmap = (Map) mlist.get(0);
+                dtspotcheckproj.setORDERNO3D(lmap.get("V_ORDERID").toString());//3级工单号
+                dtspotcheckproj.setORDERTYP(lmap.get("V_ORDER_TYP").toString());//工单类型（固定）
+                dtspotcheckproj.setFUNCLOC(lmap.get("V_FUNC_LOC").toString());//功能位置
+                dtspotcheckproj.setEQUIPNO(lmap.get("V_EQUIP_NO").toString());//设备
+                dtspotcheckproj.setPLANT(lmap.get("V_PLANT").toString());//维修工厂
+                dtspotcheckproj.setIWERK(lmap.get("V_IWERK").toString());//计划工厂
+                dtspotcheckproj.setSTARTDATE(lmap.get("D_START_DATE").toString());//基本开始日期
+                dtspotcheckproj.setFINISHDATE(lmap.get("D_FINISH_DATE").toString());//基本完成日期
+                dtspotcheckproj.setACTTYPE(lmap.get("V_ACT_TYPE").toString());//PM作业类型
+                dtspotcheckproj.setPLANNER(lmap.get("V_PLANNER").toString());//计划员组
+                dtspotcheckproj.setWORKCTR(lmap.get("V_WORK_CTR").toString());//维护工作中心
+                dtspotcheckproj.setSHORTTXT(lmap.get("V_SHORT_TXT").toString());//工单描述
+                dtspotcheckproj.setGSBER(lmap.get("V_GSBER").toString());//业务范围
+
+                DTSPOTCHECKPROJ.WBS wbs = new DTSPOTCHECKPROJ.WBS();
+
+                wbs.setValue(lmap.get("V_WBS").toString());
+
+                JAXBElement<DTSPOTCHECKPROJ.WBS> w = new JAXBElement<DTSPOTCHECKPROJ.WBS>(new QName("", "WBS"), DTSPOTCHECKPROJ.WBS.class, DTSPOTCHECKPROJ.class, wbs);
+
+                dtspotcheckproj.setWBS(w);//WBS元素
+
+                URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
+                QName name = new QName("http://www.anshanmining.com/pm/", "SI_SpotChkProj_inService");
+                SISpotChkProjInService siSpotChkProjInService = new SISpotChkProjInService(url, name);
+                SISpotChkProjIn soap = siSpotChkProjInService.getSISpotChkProjInPort();
+
+                BindingProvider bp = (BindingProvider) soap;
+                bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
+                bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
+                bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm1001Url").toString());
+
+                soap.siSpotChkProj(dtspotcheckproj);
+
+                result = pmRepository.WebServiceLog("", mapEle.get("ORDERGUID").toString(), "成功", "Sap工单接口WebService：SI_SpotChkProj_inPM1001插入成功，信息插入成功！唯一值为工单guid" + mapEle.get("ORDERGUID").toString());
+                writeDataRequest.addElement("type").setText("S");
+                writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
+                writeDataRequest.addElement("info").setText("成功");
+            }
+        } catch (Exception de) {
+            result = pmRepository.WebServiceLog("", mapEle.get("ORDERGUID").toString(), "失败", "Sap工单接口WebService：SI_SpotChkProj_inPM1001插入成功，信息插入失败！唯一值为工单guid" + mapEle.get("ORDERGUID").toString());
+            writeDataRequest.addElement("type").setText("S");
+            writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
+            writeDataRequest.addElement("info").setText("失败");
         }
         return root.asXML();
 

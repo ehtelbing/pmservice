@@ -60,4 +60,28 @@ public class DjServiceImpl implements DjService {
         return ret;
     }
 
+    @Override
+    public SpotCheckProjRetEnity SpotCheckProjRet(SpotCheckProjEnity spotCheckProjEnity) {
+        SpotCheckProjRetEnity spotCheckProjRetEnity = new SpotCheckProjRetEnity();
+
+        try {
+            Map result = djRepository.ImportSapWorkOrder(spotCheckProjEnity.getORDER_NO3D(),spotCheckProjEnity.getORDER_NOSAP());
+            if (result.get("ret").equals("SUCCESS")) {
+                wxjhRepository.WebServiceLog("", spotCheckProjEnity.getORDER_NO3D(), "成功", "点检待修项目上传接口返回消息WebService成功");
+                spotCheckProjRetEnity.setMSG_TYPE("S");
+                spotCheckProjRetEnity.setRET_MSG("成功");
+            } else {
+                wxjhRepository.WebServiceLog("", spotCheckProjEnity.getORDER_NO3D(), "成功", "点检待修项目上传接口返回消息WebService成功");
+                spotCheckProjRetEnity.setMSG_TYPE("E");
+                spotCheckProjRetEnity.setRET_MSG(result.get("ret").toString());
+            }
+
+        } catch (Exception e) {
+            wxjhRepository.WebServiceLog("", spotCheckProjEnity.getORDER_NO3D(), "失败", "点检待修项目上传接口返回消息WebService失败");
+            spotCheckProjRetEnity.setMSG_TYPE("E");
+            spotCheckProjRetEnity.setRET_MSG(e.getMessage());
+        }
+        return spotCheckProjRetEnity;
+
+    }
 }

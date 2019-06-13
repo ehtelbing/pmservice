@@ -2,18 +2,14 @@ package org.building.pmservice.service.Enity;
 
 import java.util.List;
 
-public class WeekxcReturnEnity {
+public class DefectRetEnity {
     private String SYSNAME;
     private String V_YEAR;
     private String V_MONTH;
-    private String V_WEEK;
     private String V_ORGCODE;
     private String V_DEPTCODE;
 
-    private String V_INFO;
-    private String V_TYPE;
-
-    private List<WeekxChReturnEnity> Items;
+    private List<DefectRetOEnity> items;
 
     public String getSYSNAME() {
         return SYSNAME;
@@ -39,14 +35,6 @@ public class WeekxcReturnEnity {
         V_MONTH = v_MONTH;
     }
 
-    public String getV_WEEK() {
-        return V_WEEK;
-    }
-
-    public void setV_WEEK(String v_WEEK) {
-        V_WEEK = v_WEEK;
-    }
-
     public String getV_ORGCODE() {
         return V_ORGCODE;
     }
@@ -63,27 +51,11 @@ public class WeekxcReturnEnity {
         V_DEPTCODE = v_DEPTCODE;
     }
 
-    public List<WeekxChReturnEnity> getItems() {
-        return Items;
+    public List<DefectRetOEnity> getItems() {
+        return items;
     }
 
-    public void setItems(List<WeekxChReturnEnity> items) {
-        Items = items;
-    }
-
-    public String getV_INFO() {
-        return V_INFO;
-    }
-
-    public void setV_INFO(String v_INFO) {
-        V_INFO = v_INFO;
-    }
-
-    public String getV_TYPE() {
-        return V_TYPE;
-    }
-
-    public void setV_TYPE(String v_TYPE) {
-        V_TYPE = v_TYPE;
+    public void setItems(List<DefectRetOEnity> items) {
+        this.items = items;
     }
 }

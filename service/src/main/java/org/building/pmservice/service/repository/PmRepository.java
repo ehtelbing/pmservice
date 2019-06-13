@@ -185,4 +185,24 @@ public class PmRepository {
             }
         });
     }
+
+    public Map PRO_PM_WORKORDER_GET(String V_V_ORDERGUID){
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection cot) throws SQLException {
+                String sql = "{call PRO_PM_WORKORDER_GET(:V_V_ORDERGUID,:V_CURSOR)}";
+                CallableStatement statement = cot.prepareCall(sql);
+                statement.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result=new HashMap();
+                result.put("list",ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                return result;
+            }
+        });
+    }
 }
