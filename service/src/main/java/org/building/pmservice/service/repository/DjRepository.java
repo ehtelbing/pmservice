@@ -75,7 +75,7 @@ public class DjRepository {
         });
     }
 
-    public Map ImportSapWorkOrder(String WorkOrderId,String SapWorkOrderId) {
+    public Map ImportSapWorkOrder(String WorkOrderId,String SapWorkOrderId,String TYPE,String MSG) {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
@@ -84,6 +84,8 @@ public class DjRepository {
                 CallableStatement statement = con.prepareCall(sql);
                 statement.setString("V_V_WorkOrderId", WorkOrderId);
                 statement.setString("V_V_SapWorkOrderId", SapWorkOrderId);
+                statement.setString("V_V_TYPE", TYPE);
+                statement.setString("V_V_MSG", MSG);
                 statement.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
                 return statement;
             }

@@ -427,8 +427,8 @@ public class PmServiceImpl implements PmService {
                 dtspotcheckproj.setEQUIPNO(lmap.get("V_EQUIP_NO").toString());//设备
                 dtspotcheckproj.setPLANT(lmap.get("V_PLANT").toString());//维修工厂
                 dtspotcheckproj.setIWERK(lmap.get("V_IWERK").toString());//计划工厂
-                dtspotcheckproj.setSTARTDATE(lmap.get("D_START_DATE").toString());//基本开始日期
-                dtspotcheckproj.setFINISHDATE(lmap.get("D_FINISH_DATE").toString());//基本完成日期
+                dtspotcheckproj.setSTARTDATE(lmap.get("D_START_DATE_SAP").toString());//基本开始日期
+                dtspotcheckproj.setFINISHDATE(lmap.get("D_FINISH_DATE_SAP").toString());//基本完成日期
                 dtspotcheckproj.setACTTYPE(lmap.get("V_ACT_TYPE").toString());//PM作业类型
                 dtspotcheckproj.setPLANNER(lmap.get("V_PLANNER").toString());//计划员组
                 dtspotcheckproj.setWORKCTR(lmap.get("V_WORK_CTR").toString());//维护工作中心
