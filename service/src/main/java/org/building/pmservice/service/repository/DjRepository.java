@@ -23,11 +23,11 @@ import java.util.Map;
 public class DjRepository {
     private JdbcTemplate template;
 
-    @Autowired
+   /* @Autowired
     public void setTest1DataSource(DataSource dataSource) {
         this.template = new JdbcTemplate(dataSource);
     }
-
+*/
     public Map ImportDefect(String V_V_SYSTEM,String V_V_I_ID, String V_V_DEFECTLIST, String V_V_DEFTYPE,
                             String V_V_SOURCEID, String V_D_DEFECTDATE, String V_D_INDATE, String V_V_PERCODE, String V_V_PERNAME,
                             String V_V_DEPTCODE, String V_V_EQUCODE, String V_V_IDEA, String V_V_EQUSITE, String V_V_EQUCHILDCODE,
