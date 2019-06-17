@@ -422,17 +422,17 @@ public class PmServiceImpl implements PmService {
             if (mlist.size() > 0) {
                 Map lmap = (Map) mlist.get(0);
                 dtspotcheckproj.setORDERNO3D(lmap.get("V_ORDERID").toString());//3级工单号
-                dtspotcheckproj.setORDERTYP(lmap.get("V_ORDER_TYP").toString());//工单类型（固定）
+                dtspotcheckproj.setORDERTYP("AK05");//工单类型（固定）
                 dtspotcheckproj.setFUNCLOC(lmap.get("V_FUNC_LOC").toString());//功能位置
                 dtspotcheckproj.setEQUIPNO(lmap.get("V_EQUIP_NO").toString());//设备
                 dtspotcheckproj.setPLANT(lmap.get("V_PLANT").toString());//维修工厂
                 dtspotcheckproj.setIWERK(lmap.get("V_IWERK").toString());//计划工厂
                 dtspotcheckproj.setSTARTDATE(lmap.get("D_START_DATE_SAP").toString());//基本开始日期
                 dtspotcheckproj.setFINISHDATE(lmap.get("D_FINISH_DATE_SAP").toString());//基本完成日期
-                dtspotcheckproj.setACTTYPE(lmap.get("V_ACT_TYPE").toString());//PM作业类型
+                dtspotcheckproj.setACTTYPE("PM01");//PM作业类型
                 dtspotcheckproj.setPLANNER(lmap.get("V_PLANNER").toString());//计划员组
                 dtspotcheckproj.setWORKCTR(lmap.get("V_WORK_CTR").toString());//维护工作中心
-                dtspotcheckproj.setSHORTTXT(lmap.get("V_SHORT_TXT").toString());//工单描述
+                dtspotcheckproj.setSHORTTXT("AK05");//工单描述
                 dtspotcheckproj.setGSBER(lmap.get("V_GSBER").toString());//业务范围
 
                 DTSPOTCHECKPROJ.WBS wbs = new DTSPOTCHECKPROJ.WBS();
