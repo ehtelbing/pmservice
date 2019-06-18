@@ -155,19 +155,20 @@ public class PmServiceImpl implements PmService {
 
             DTJXWCJG dtjxwcjg = new DTJXWCJG();
             List<DTJXWCJG.Items> list = new ArrayList<DTJXWCJG.Items>();
-            DTJXWCJG.Items items = new DTJXWCJG.Items();
 
-            Map retmap = pmRepository.maintain_by_defect_sel_dguid(mapEle.get("V_DEFECT_GUID").toString());
+
+            Map retmap = pmRepository.maintain_by_defect_sel_dguid(mapEle.get("V_V_WORKORDER").toString());
             List rlist = (List) retmap.get("list");
 
-            Map emap = (Map) rlist.get(0);
-
-            items.setVDEFECTGUID(mapEle.get("V_DEFECT_GUID").toString());
-            items.setVDEFECTTYPE(mapEle.get("V_DEFECT_TYPE").toString());
-            items.setVSYSTEM(mapEle.get("V_SYSTEM").toString());
-            items.setVGUID(emap.get("FX_GUID").toString());
-            list.add(items);
-
+            for(int i=0;i<rlist.size();i++){
+                Map emap = (Map) rlist.get(i);
+                DTJXWCJG.Items items = new DTJXWCJG.Items();
+                items.setVDEFECTGUID(emap.get("DEFECT_GUID").toString());
+                items.setVDEFECTTYPE(mapEle.get("V_V_DEFECT_TYPE").toString());
+                items.setVSYSTEM(mapEle.get("V_SYSTEM").toString());
+                items.setVGUID(emap.get("FX_GUID").toString());
+                list.add(items);
+            }
             dtjxwcjg.setItems(list);
 
             URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
@@ -184,13 +185,13 @@ public class PmServiceImpl implements PmService {
             DTJXWCJGRet ret = soap.siJXWCJG(dtjxwcjg);
 
             if (ret.getVTYPE().equals("S")) {
-                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "成功", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014成功，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
+                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_V_WORKORDER").toString(), "成功", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014成功，信息插入成功！唯一值为工单guid" + mapEle.get("V_V_WORKORDER").toString() + "接口返回信息为：" + ret.getVINFO());
 
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
                 WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("info").setText(ret.getVINFO());
             } else {
-                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "接口返回信息为：" + ret.getVINFO());
+                result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_V_WORKORDER").toString(), "失败", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014失败，信息插入成功！唯一值为工单guid" + mapEle.get("V_V_WORKORDER").toString() + "接口返回信息为：" + ret.getVINFO());
 
                 WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
                 WriteDataRequest.addElement("type").setText(ret.getVTYPE());
@@ -198,7 +199,7 @@ public class PmServiceImpl implements PmService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_DEFECT_GUID").toString(), "失败", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014失败，信息插入成功！唯一值为缺陷guid" + mapEle.get("V_DEFECT_GUID").toString() + "错误信息为：" + e.getMessage());
+            result = pmRepository.WebServiceLog(mapEle.get("V_SYSTEM").toString(), mapEle.get("V_V_WORKORDER").toString(), "失败", "检修完成结果下传WebService：SI_JXWCJG_Out_Syn_PM0014失败，信息插入成功！唯一值为工单guid" + mapEle.get("V_V_WORKORDER").toString() + "错误信息为：" + e.getMessage());
 
             WriteDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
             WriteDataRequest.addElement("type").setText("E");
@@ -235,11 +236,12 @@ public class PmServiceImpl implements PmService {
                 dtdjqxcljg.setVSYSTEM(lmap.get("V_SYSTEM").toString());
 
                 items.setIID(lmap.get("V_SOURCEID").toString());
-                if (lmap.get("V_STATECODE").toString().equals("30") || lmap.get("V_STATECODE").toString().equals("23")) {
+                /*if (lmap.get("V_STATECODE").toString().equals("30") || lmap.get("V_STATECODE").toString().equals("23")) {
                     items.setVSTATE("1");
                 } else {
                     items.setVSTATE("0");
-                }
+                }*/
+                items.setVSTATE("1");
                 items.setVREMARKS(lmap.get("V_BZ").toString());
                 items.setVSTR01("");
                 items.setVSTR02("");
