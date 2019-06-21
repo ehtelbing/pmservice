@@ -6,7 +6,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.util.List;
 
-@WebService(targetNamespace = "http://soap.service.pmservice.building.org/", endpointInterface = "org.building.pmservice.service.soap.MonthService")
+@WebService
 public interface MonthService {
     @WebMethod
     public MonthxcReturnEnity Monxc(MonthxcEnity items);
