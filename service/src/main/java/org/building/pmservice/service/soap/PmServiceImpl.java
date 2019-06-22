@@ -437,13 +437,13 @@ public class PmServiceImpl implements PmService {
                 dtspotcheckproj.setGSBER(lmap.get("V_GSBER").toString());//业务范围
 
                 DTSPOTCHECKPROJ.WBS wbs = new DTSPOTCHECKPROJ.WBS();
-                DTSPOTCHECKPROJ.CTROLKEY ctrolkey=new DTSPOTCHECKPROJ.CTROLKEY();
+                DTSPOTCHECKPROJ.CTROLKEY ctrolkey = new DTSPOTCHECKPROJ.CTROLKEY();
 
                 ctrolkey.setValue("PM01");
                 wbs.setValue(lmap.get("V_WBS").toString());
 
                 JAXBElement<DTSPOTCHECKPROJ.WBS> w = new JAXBElement<DTSPOTCHECKPROJ.WBS>(new QName("", "WBS"), DTSPOTCHECKPROJ.WBS.class, DTSPOTCHECKPROJ.class, wbs);
-                JAXBElement<DTSPOTCHECKPROJ.CTROLKEY> c =new JAXBElement<>(new QName("","CTROLKEY"),DTSPOTCHECKPROJ.CTROLKEY.class,DTSPOTCHECKPROJ.class,ctrolkey);
+                JAXBElement<DTSPOTCHECKPROJ.CTROLKEY> c = new JAXBElement<>(new QName("", "CTROLKEY"), DTSPOTCHECKPROJ.CTROLKEY.class, DTSPOTCHECKPROJ.class, ctrolkey);
 
                 dtspotcheckproj.setWBS(w);//WBS元素
                 dtspotcheckproj.setCTROLKEY(c);
