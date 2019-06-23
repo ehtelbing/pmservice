@@ -205,4 +205,24 @@ public class PmRepository {
             }
         });
     }
+
+    public Map PRO_SAP_MM_DIC_GET(String V_V_PLANT) {
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection cot) throws SQLException {
+                String sql = "{call PRO_SAP_MM_DIC_GET(:V_V_ORDERGUID,:V_CURSOR)}";
+                CallableStatement statement = cot.prepareCall(sql);
+                statement.setString("V_V_PLANT", V_V_PLANT);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                return result;
+            }
+        });
+    }
 }
