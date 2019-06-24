@@ -423,7 +423,7 @@ public class PmServiceImpl implements PmService {
 
             if (mlist.size() > 0) {
                 Map lmap = (Map) mlist.get(0);
-                Map map_tosap = pmRepository.PRO_SAP_MM_DIC_GET(lmap.get("V_PLANT").toString());
+                Map map_tosap = pmRepository.PRO_SAP_MM_DIC_GET(mapEle.get("ORDERGUID").toString(), lmap.get("V_PLANT").toString());
                 List mlist_map_tosap = (List) map_tosap.get("list");
                 if (mlist_map_tosap.size() > 0) {
                     Map lmap_tosap = (Map) mlist_map_tosap.get(0);
