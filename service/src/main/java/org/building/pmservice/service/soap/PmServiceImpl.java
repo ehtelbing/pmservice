@@ -423,47 +423,67 @@ public class PmServiceImpl implements PmService {
 
             if (mlist.size() > 0) {
                 Map lmap = (Map) mlist.get(0);
-                dtspotcheckproj.setORDERNO3D(lmap.get("V_ORDERID").toString());//3级工单号
-                dtspotcheckproj.setORDERTYP("AK12");//工单类型（固定）
-                dtspotcheckproj.setFUNCLOC(lmap.get("V_FUNC_LOC").toString());//功能位置
-                dtspotcheckproj.setEQUIPNO(lmap.get("V_EQUIP_NO").toString());//设备
-                dtspotcheckproj.setPLANT(lmap.get("V_PLANT").toString());//维修工厂
-                dtspotcheckproj.setIWERK(lmap.get("V_IWERK").toString());//计划工厂
-                dtspotcheckproj.setSTARTDATE(lmap.get("D_START_DATE_SAP").toString());//基本开始日期
-                dtspotcheckproj.setFINISHDATE(lmap.get("D_FINISH_DATE_SAP").toString());//基本完成日期
-                dtspotcheckproj.setPLANNER(lmap.get("V_PLANNER").toString());//计划员组
-                dtspotcheckproj.setWORKCTR(lmap.get("V_WORK_CTR").toString());//维护工作中心
-                dtspotcheckproj.setSHORTTXT(lmap.get("V_SHORT_TXT").toString());//工单描述
-                dtspotcheckproj.setGSBER(lmap.get("V_GSBER").toString());//业务范围
+                Map map_tosap = pmRepository.PRO_SAP_MM_DIC_GET(mapEle.get("ORDERGUID").toString(), lmap.get("V_PLANT").toString());
+                List mlist_map_tosap = (List) map_tosap.get("list");
+                if (mlist_map_tosap.size() > 0) {
+                    Map lmap_tosap = (Map) mlist_map_tosap.get(0);
 
-                DTSPOTCHECKPROJ.WBS wbs = new DTSPOTCHECKPROJ.WBS();
-                DTSPOTCHECKPROJ.CTROLKEY ctrolkey = new DTSPOTCHECKPROJ.CTROLKEY();
+                    dtspotcheckproj.setORDERNO3D(lmap.get("V_ORDERID").toString());//3级工单号
+                    dtspotcheckproj.setORDERTYP(lmap_tosap.get("ORDER_TYP").toString());//工单类型（固定）
+                    dtspotcheckproj.setFUNCLOC(lmap.get("V_FUNC_LOC").toString());//功能位置
+                    dtspotcheckproj.setEQUIPNO(lmap.get("V_EQUIP_NO").toString());//设备
+                    dtspotcheckproj.setPLANT(lmap.get("V_PLANT").toString());//维修工厂
+                    dtspotcheckproj.setIWERK(lmap.get("V_IWERK").toString());//计划工厂
+                    dtspotcheckproj.setSTARTDATE(lmap.get("D_START_DATE_SAP").toString());//基本开始日期
+                    dtspotcheckproj.setFINISHDATE(lmap.get("D_FINISH_DATE_SAP").toString());//基本完成日期
+                    dtspotcheckproj.setACTTYPE(lmap_tosap.get("ACTTYPE") == null ? "" : lmap_tosap.get("ACTTYPE").toString());//
+                    dtspotcheckproj.setPLANNER(lmap_tosap.get("PLANNER").toString());//计划员组
+                    dtspotcheckproj.setWORKCTR(lmap_tosap.get("WORK_CTR").toString());//维护工作中心
+                    dtspotcheckproj.setSHORTTXT(lmap.get("V_SHORT_TXT").toString());//工单描述
+                    dtspotcheckproj.setGSBER(lmap.get("V_GSBER").toString());//业务范围
+                    DTSPOTCHECKPROJ.LineItemsOfLtext List_Line = new DTSPOTCHECKPROJ.LineItemsOfLtext();
+                    DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT longtxt = new DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT();
+                    longtxt.setValue(lmap.get("V_SHORT_TXT").toString());
+                    JAXBElement<DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT> ListLineItemsOfLtext = new JAXBElement<DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT>(new QName("", "LONGTXT"), DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT.class, DTSPOTCHECKPROJ.class, longtxt);
 
-                ctrolkey.setValue("PM01");
-                wbs.setValue(lmap.get("V_WBS").toString());
+                    List_Line.setLONGTXT(ListLineItemsOfLtext);
+                    dtspotcheckproj.getLineItemsOfLtext().add(List_Line);
 
-                JAXBElement<DTSPOTCHECKPROJ.WBS> w = new JAXBElement<DTSPOTCHECKPROJ.WBS>(new QName("", "WBS"), DTSPOTCHECKPROJ.WBS.class, DTSPOTCHECKPROJ.class, wbs);
-                JAXBElement<DTSPOTCHECKPROJ.CTROLKEY> c = new JAXBElement<>(new QName("", "CTROLKEY"), DTSPOTCHECKPROJ.CTROLKEY.class, DTSPOTCHECKPROJ.class, ctrolkey);
+                    DTSPOTCHECKPROJ.WBS wbs = new DTSPOTCHECKPROJ.WBS();
+                    DTSPOTCHECKPROJ.CTROLKEY ctrolkey = new DTSPOTCHECKPROJ.CTROLKEY();
 
-                dtspotcheckproj.setWBS(w);//WBS元素
-                dtspotcheckproj.setCTROLKEY(c);
+                    ctrolkey.setValue(lmap_tosap.get("CTROLKEY").toString());
+                    wbs.setValue(lmap.get("V_WBS").toString());
 
-                URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
-                QName name = new QName("http://www.anshanmining.com/pm/", "SI_SpotChkProj_inService");
-                SISpotChkProjInService siSpotChkProjInService = new SISpotChkProjInService(url, name);
-                SISpotChkProjIn soap = siSpotChkProjInService.getSISpotChkProjInPort();
+                    JAXBElement<DTSPOTCHECKPROJ.WBS> w = new JAXBElement<DTSPOTCHECKPROJ.WBS>(new QName("", "WBS"), DTSPOTCHECKPROJ.WBS.class, DTSPOTCHECKPROJ.class, wbs);
+                    JAXBElement<DTSPOTCHECKPROJ.CTROLKEY> c = new JAXBElement<>(new QName("", "CTROLKEY"), DTSPOTCHECKPROJ.CTROLKEY.class, DTSPOTCHECKPROJ.class, ctrolkey);
 
-                BindingProvider bp = (BindingProvider) soap;
-                bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
-                bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
-                bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm1001Url").toString());
+                    dtspotcheckproj.setWBS(w);//WBS元素
+                    dtspotcheckproj.setCTROLKEY(c);
 
-                soap.siSpotChkProj(dtspotcheckproj);
+                    URL url = new URL("file:" + mapEle.get("WsdlUrl").toString());
+                    QName name = new QName("http://www.anshanmining.com/pm/", "SI_SpotChkProj_inService");
+                    SISpotChkProjInService siSpotChkProjInService = new SISpotChkProjInService(url, name);
+                    SISpotChkProjIn soap = siSpotChkProjInService.getSISpotChkProjInPort();
 
-                result = pmRepository.WebServiceLog("", mapEle.get("ORDERGUID").toString(), "成功", "Sap工单接口WebService：SI_SpotChkProj_inPM1001插入成功，信息插入成功！唯一值为工单guid" + mapEle.get("ORDERGUID").toString());
-                writeDataRequest.addElement("type").setText("S");
-                writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
-                writeDataRequest.addElement("info").setText("成功");
+                    BindingProvider bp = (BindingProvider) soap;
+                    bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, mapEle.get("piusername").toString());
+                    bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, mapEle.get("pipassword").toString());
+                    bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, mapEle.get("Pm1001Url").toString());
+
+                    soap.siSpotChkProj(dtspotcheckproj);
+
+                    result = pmRepository.WebServiceLog("", mapEle.get("ORDERGUID").toString(), "成功", "Sap工单接口WebService：SI_SpotChkProj_inPM1001插入成功，信息插入成功！唯一值为工单guid" + mapEle.get("ORDERGUID").toString());
+                    writeDataRequest.addElement("type").setText("S");
+                    writeDataRequest.addElement("V_INFO").setText(result.get("V_INFO").toString());
+                    writeDataRequest.addElement("info").setText("成功");
+                } else {
+                    result = pmRepository.WebServiceLog("", mapEle.get("ORDERGUID").toString(), "失败", "Sap工单接口WebService：SI_SpotChkProj_inPM1001插入成功，信息插入失败！唯一值为工单guid" + mapEle.get("ORDERGUID").toString());
+                    writeDataRequest.addElement("type").setText("S");
+                    writeDataRequest.addElement("V_INFO").setText("SAP_MM_DIC表没有对应信息。");
+                    writeDataRequest.addElement("info").setText("失败");
+
+                }
             }
         } catch (Exception de) {
             result = pmRepository.WebServiceLog("", mapEle.get("ORDERGUID").toString(), "失败", "Sap工单接口WebService：SI_SpotChkProj_inPM1001插入成功，信息插入失败！唯一值为工单guid" + mapEle.get("ORDERGUID").toString());
