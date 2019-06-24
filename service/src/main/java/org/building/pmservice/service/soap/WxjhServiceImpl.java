@@ -31,11 +31,17 @@ public class WxjhServiceImpl implements WxjhService {
                                 w.getV_REPAIR_DEPT_TXT(), w.getV_FZR(), w.getV_DATE_B(), w.getV_DATE_E(),
                                 w.getV_INPER(), w.getV_INTIEM(), w.getV_PORJECT_GUID());
                         if (result.equals("SUCCESS")) {
+                            ret.setV_INFO("成功！");
+                            ret.setV_TYPE("S");
                             wxjhRepository.WebServiceLog(w.getV_SYSTEM(), w.getV_GUID(), "成功", "外委放行计划WebService传递成功，信息插入成功！唯一值为放行计划guid" + w.getV_GUID());
                         } else {
+                            ret.setV_INFO(result);
+                            ret.setV_TYPE("E");
                             wxjhRepository.WebServiceLog(w.getV_SYSTEM(), w.getV_GUID(), "失败", "外委维修计划处理结果下传WebService成功，信息插入失败！唯一值为放行计划guid" + w.getV_GUID());
                         }
                     } catch (Exception e) {
+                        ret.setV_INFO(e.getMessage());
+                        ret.setV_TYPE("E");
                         wxjhRepository.WebServiceLog(w.getV_SYSTEM(), w.getV_GUID(), "失败", "外委维修计划处理结果下传WebService成功，信息插入失败！失败信息为" + e.getMessage() + "唯一值为放行计划guid" + w.getV_GUID());
                     }
                 }
@@ -45,8 +51,7 @@ public class WxjhServiceImpl implements WxjhService {
             ret.setV_INFO(e.getMessage());
             ret.setV_TYPE("E");
         }
-        ret.setV_INFO("成功！");
-        ret.setV_TYPE("S");
+
         return ret;
     }
 
@@ -61,13 +66,19 @@ public class WxjhServiceImpl implements WxjhService {
                     WwqxbhEnity w = items.get(i);
                     try {
 
-                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID(),w.getV_STR01());
+                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID(), w.getV_STR01());
                         if (result.equals("SUCCESS")) {
+                            ret.setV_INFO("成功！");
+                            ret.setV_TYPE("S");
                             wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "成功", "外委维修计划缺陷驳回WebService成功，信息插入成功！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                         } else {
+                            ret.setV_INFO(result);
+                            ret.setV_TYPE("E");
                             wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "失败", "外委维修计划缺陷驳回WebService成功，信息插入失败！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                         }
                     } catch (Exception e) {
+                        ret.setV_INFO(e.getMessage());
+                        ret.setV_TYPE("E");
                         wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "失败", "外委维修计划缺陷驳回WebService成功，信息插入失败！失败信息为" + e.getMessage() + "唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                     }
                 }
@@ -77,8 +88,6 @@ public class WxjhServiceImpl implements WxjhService {
             ret.setV_INFO(e.getMessage());
             ret.setV_TYPE("E");
         }
-        ret.setV_INFO("成功！");
-        ret.setV_TYPE("S");
         return ret;
     }
 
@@ -92,13 +101,19 @@ public class WxjhServiceImpl implements WxjhService {
                     WwjsqxjgEnity w = items.get(i);
                     try {
 
-                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID(),w.getV_STR01());
+                        result = wxjhRepository.DefectBack(w.getV_DEFECT_GUID(), w.getV_BILL_CODE(), w.getV_DEFECT_TYPE(), w.getV_GUID(), w.getV_STR01());
                         if (result.equals("SUCCESS")) {
+                            ret.setV_INFO("成功！");
+                            ret.setV_TYPE("S");
                             wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "成功", "委外竣工（决算）结果上传WebService成功，信息插入成功！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                         } else {
+                            ret.setV_INFO(result);
+                            ret.setV_TYPE("E");
                             wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "失败", "委外竣工（决算）结果上传WebService成功，信息插入失败！唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                         }
                     } catch (Exception e) {
+                        ret.setV_INFO(e.getMessage());
+                        ret.setV_TYPE("E");
                         wxjhRepository.WebServiceLog("", w.getV_DEFECT_GUID(), "失败", "委外竣工（决算）结果上传WebService成功，信息插入失败！失败信息为" + e.getMessage() + "唯一值为缺陷guid" + w.getV_DEFECT_GUID());
                     }
                 }
@@ -108,8 +123,6 @@ public class WxjhServiceImpl implements WxjhService {
             ret.setV_INFO(e.getMessage());
             ret.setV_TYPE("E");
         }
-        ret.setV_INFO("成功！");
-        ret.setV_TYPE("S");
         return ret;
     }
 }
