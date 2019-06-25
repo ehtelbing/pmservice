@@ -67,6 +67,32 @@ public class MonthServiceImpl implements MonthService {
                             monthxcLReturnEnity.setV_ADJUST("否");
                         }
 
+                        Map weekRet = monthRepository.OutWeekGuidByMonth(cmap.get("V_GUID").toString());
+                        List weekList = (List) weekRet.get("list");
+                        if (weekList.size() > 0) {
+                            List<DDWeekReturnEnity> wdata = new ArrayList<>();
+                            for (int w = 0; w < weekList.size(); w++) {
+                                Map mweek = (Map) weekList.get(w);
+                                DDWeekReturnEnity ddWeekReturnEnity = new DDWeekReturnEnity();
+                                ddWeekReturnEnity.setV_WEEKGUID(mweek.get("V_OTHERPLAN_GUID").toString());
+                                wdata.add(ddWeekReturnEnity);
+                            }
+                            monthxcLReturnEnity.setWitems(wdata);
+                        }
+
+                        Map defectRet = monthRepository.OutDefectGuidByMonth(cmap.get("V_GUID").toString());
+                        List defectList = (List) defectRet.get("list");
+                        if (defectList.size() > 0) {
+                            List<DDDefectReturnEnity> ddata = new ArrayList<>();
+                            for (int d = 0; d < defectList.size(); d++) {
+                                Map mdefect = (Map) defectList.get(d);
+                                DDDefectReturnEnity ddDefectReturnEnity = new DDDefectReturnEnity();
+                                ddDefectReturnEnity.setV_DEFECTGUID(mdefect.get("V_DEFECT_GUID").toString());
+                                ddata.add(ddDefectReturnEnity);
+                            }
+                            monthxcLReturnEnity.setDitems(ddata);
+                        }
+
                         lists.add(monthxcLReturnEnity);
                     }
                     ret.setV_INFO("成功！");
@@ -130,7 +156,7 @@ public class MonthServiceImpl implements MonthService {
                         weekxChReturnEnity.setV_SGWAYNAME(cmap.get("V_SGWAYNAME").toString());
                         weekxChReturnEnity.setV_FLAG(cmap.get("V_FLAG").toString());
                         weekxChReturnEnity.setV_OPERANAME(cmap.get("V_OPERANAME").toString());
-
+                        weekxChReturnEnity.setV_STR01(cmap.get("V_WORKORDER_GUID").toString());
                         lists.add(weekxChReturnEnity);
                     }
                     ret.setV_INFO("成功！");
@@ -276,7 +302,7 @@ public class MonthServiceImpl implements MonthService {
                 wxjhRepository.WebServiceLog(items.getV_V_SYSTEM(), "", "失败", "缺陷" + items.getV_V_YEAR() + "年" + items.getV_V_MONTH() + "月" + items.getV_V_ORGCODE() + "厂矿" + items.getV_V_DEPTCODE() + "作业区失败返回" + result.size());
             }
         } catch (Exception e) {
-            wxjhRepository.WebServiceLog(items.getV_V_SYSTEM(), "", "失败", "缺陷" + items.getV_V_YEAR() + "年" + items.getV_V_MONTH() + "月" + items.getV_V_ORGCODE() + "厂矿" + items.getV_V_DEPTCODE() + "作业区失败返回" );
+            wxjhRepository.WebServiceLog(items.getV_V_SYSTEM(), "", "失败", "缺陷" + items.getV_V_YEAR() + "年" + items.getV_V_MONTH() + "月" + items.getV_V_ORGCODE() + "厂矿" + items.getV_V_DEPTCODE() + "作业区失败返回");
         }
         return defectRetEnity;
     }

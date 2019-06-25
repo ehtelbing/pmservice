@@ -29,7 +29,24 @@ public class MonthxcLReturnEnity {
     private String V_STR04;
     private String V_STR05;
 
+    private List<DDWeekReturnEnity> witems;
+    private List<DDDefectReturnEnity> ditems;
 
+    public List<DDWeekReturnEnity> getWitems() {
+        return witems;
+    }
+
+    public void setWitems(List<DDWeekReturnEnity> witems) {
+        this.witems = witems;
+    }
+
+    public List<DDDefectReturnEnity> getDitems() {
+        return ditems;
+    }
+
+    public void setDitems(List<DDDefectReturnEnity> ditems) {
+        this.ditems = ditems;
+    }
 
     public String getV_GUID() {
         return V_GUID;

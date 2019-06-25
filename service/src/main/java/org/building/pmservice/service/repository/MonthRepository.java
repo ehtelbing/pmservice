@@ -69,7 +69,7 @@ public class MonthRepository {
     }
 
     //month download
-    public Map OutMonthData(String V_V_YEAR,String V_V_MONTH,String V_ORG_CODE,String V_DEPT_CODE){
+    public Map OutMonthData(String V_V_YEAR, String V_V_MONTH, String V_ORG_CODE, String V_DEPT_CODE) {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
@@ -90,15 +90,59 @@ public class MonthRepository {
             @Override
             public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
                 callableStatement.execute();
-                Map result=new HashMap();
-                result.put("list",ResultHash((ResultSet) callableStatement.getObject("RET")));
-                result.put("RET",(String) callableStatement.getString("INFO"));
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("RET")));
+                result.put("RET", (String) callableStatement.getString("INFO"));
                 return result;
             }
         });
     }
 
-    public Map OutWeekData(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,String V_V_ORG_CODE,String V_V_DEPT_CODE){
+    public Map OutWeekGuidByMonth(String MonthGuid) {
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PRO_WEEKDATA_BY_MONTH(:V_V_MONTHGUID,:V_CURSOR)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_V_MONTHGUID", MonthGuid);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                return result;
+            }
+        });
+    }
+
+    public Map OutDefectGuidByMonth(String MonthGuid){
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PRO_DEFECTDATA_BY_MONTH(:V_V_MONTHGUID,:V_CURSOR)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_V_MONTHGUID", MonthGuid);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                return result;
+            }
+        });
+    }
+
+    public Map OutWeekData(String V_V_YEAR, String V_V_MONTH, String V_V_WEEK, String V_V_ORG_CODE, String V_V_DEPT_CODE) {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
@@ -119,9 +163,9 @@ public class MonthRepository {
             @Override
             public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
                 callableStatement.execute();
-                Map result=new HashMap();
-                result.put("list",ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
-                result.put("V_INFO",(String) callableStatement.getString("V_INFO"));
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                result.put("V_INFO", (String) callableStatement.getString("V_INFO"));
                 return result;
             }
         });
@@ -147,9 +191,9 @@ public class MonthRepository {
             @Override
             public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
                 callableStatement.execute();
-                Map result=new HashMap();
-                result.put("list",ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
-                result.put("V_INFO",(String) callableStatement.getString("V_INFO"));
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                result.put("V_INFO", (String) callableStatement.getString("V_INFO"));
                 return result;
             }
         });
@@ -170,8 +214,8 @@ public class MonthRepository {
             @Override
             public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
                 callableStatement.execute();
-                Map result=new HashMap();
-                result.put("list",ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
                 return result;
             }
         });
@@ -195,8 +239,8 @@ public class MonthRepository {
             @Override
             public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
                 callableStatement.execute();
-                Map result=new HashMap();
-                result.put("list",ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
                 return result;
             }
         });

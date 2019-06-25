@@ -444,7 +444,7 @@ public class PmServiceImpl implements PmService {
                     DTSPOTCHECKPROJ.LineItemsOfLtext List_Line = new DTSPOTCHECKPROJ.LineItemsOfLtext();
                     DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT longtxt = new DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT();
                     longtxt.setValue(lmap.get("V_SHORT_TXT").toString());
-                    JAXBElement<DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT> ListLineItemsOfLtext = new JAXBElement<DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT>(new QName("", "LONGTXT"), DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT.class, DTSPOTCHECKPROJ.class, longtxt);
+                    JAXBElement<DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT> ListLineItemsOfLtext = new JAXBElement<DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT>(new QName("", "LONG_TXT"), DTSPOTCHECKPROJ.LineItemsOfLtext.LONGTXT.class, DTSPOTCHECKPROJ.class, longtxt);
 
                     List_Line.setLONGTXT(ListLineItemsOfLtext);
                     dtspotcheckproj.getLineItemsOfLtext().add(List_Line);
@@ -456,7 +456,7 @@ public class PmServiceImpl implements PmService {
                     wbs.setValue(lmap.get("V_WBS").toString());
 
                     JAXBElement<DTSPOTCHECKPROJ.WBS> w = new JAXBElement<DTSPOTCHECKPROJ.WBS>(new QName("", "WBS"), DTSPOTCHECKPROJ.WBS.class, DTSPOTCHECKPROJ.class, wbs);
-                    JAXBElement<DTSPOTCHECKPROJ.CTROLKEY> c = new JAXBElement<>(new QName("", "CTROLKEY"), DTSPOTCHECKPROJ.CTROLKEY.class, DTSPOTCHECKPROJ.class, ctrolkey);
+                    JAXBElement<DTSPOTCHECKPROJ.CTROLKEY> c = new JAXBElement<>(new QName("", "CTROL_KEY"), DTSPOTCHECKPROJ.CTROLKEY.class, DTSPOTCHECKPROJ.class, ctrolkey);
 
                     dtspotcheckproj.setWBS(w);//WBS元素
                     dtspotcheckproj.setCTROLKEY(c);

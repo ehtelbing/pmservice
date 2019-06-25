@@ -79,11 +79,11 @@ public class DjRepository {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
                     throws SQLException {
-                String sql = "{call PRO_SAP_WORKORDER_IMPORT(:V_V_WorkOrderId,:V_V_SapWorkOrderId,:V_INFO)}";
+                String sql = "{call PRO_SAP_WORKORDER_IMPORT(:V_V_WORKORDERID,:V_V_SAPWORKORDERID,:V_V_TYPE,:V_V_MSG,:V_INFO)}";
 
                 CallableStatement statement = con.prepareCall(sql);
-                statement.setString("V_V_WorkOrderId", WorkOrderId);
-                statement.setString("V_V_SapWorkOrderId", SapWorkOrderId);
+                statement.setString("V_V_WORKORDERID", WorkOrderId);
+                statement.setString("V_V_SAPWORKORDERID", SapWorkOrderId);
                 statement.setString("V_V_TYPE", TYPE);
                 statement.setString("V_V_MSG", MSG);
                 statement.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
