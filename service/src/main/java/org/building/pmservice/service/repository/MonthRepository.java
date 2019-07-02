@@ -171,6 +171,50 @@ public class MonthRepository {
         });
     }
 
+    public Map OutWorkGuidByWeek(String WeekGuid){
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PRO_WORKDATA_BY_WEEK(:V_V_WEEKGUID,:V_CURSOR)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_V_WEEKGUID", WeekGuid);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                return result;
+            }
+        });
+    }
+
+    public Map OutDefGuidByWeek(String WeekGuid){
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PM_DEFGUID_BY_WEEK(:V_V_WEEKGUID,:V_CURSOR)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_V_WEEKGUID", WeekGuid);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
+                return result;
+            }
+        });
+    }
+
     public Map OutWorkOrderData(String v_v_year, String v_v_month, String v_v_orgcode, String v_v_deptcode) {
         return template.execute(new CallableStatementCreator() {
             public CallableStatement createCallableStatement(Connection con)
@@ -194,6 +238,28 @@ public class MonthRepository {
                 Map result = new HashMap();
                 result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
                 result.put("V_INFO", (String) callableStatement.getString("V_INFO"));
+                return result;
+            }
+        });
+    }
+
+    public Map OutDefGuidByWork(String WorkGuid){
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PM_DEFGUID_BY_WORK(:V_V_WORKGUID,:V_CURSOR)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_V_WORKGUID", WorkGuid);
+                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("V_CURSOR")));
                 return result;
             }
         });

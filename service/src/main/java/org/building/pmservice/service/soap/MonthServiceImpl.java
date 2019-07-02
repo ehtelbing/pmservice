@@ -157,6 +157,33 @@ public class MonthServiceImpl implements MonthService {
                         weekxChReturnEnity.setV_FLAG(cmap.get("V_FLAG").toString());
                         weekxChReturnEnity.setV_OPERANAME(cmap.get("V_OPERANAME").toString());
                         weekxChReturnEnity.setV_STR01(cmap.get("V_WORKORDER_GUID").toString());
+
+                        Map workguidRet = monthRepository.OutWorkGuidByWeek(cmap.get("V_GUID").toString());
+                        List workList = (List) workguidRet.get("list");
+                        if (workList.size() > 0) {
+                            List<DWWorkReturnEnity> wkdata = new ArrayList<>();
+                            for (int w = 0; w < workList.size(); w++) {
+                                Map wwork = (Map) workList.get(w);
+                                DWWorkReturnEnity dwworkReturnEnity = new DWWorkReturnEnity();
+                                dwworkReturnEnity.setV_WORKGUID(wwork.get("V_WORKORDER_GUID").toString());
+                                wkdata.add(dwworkReturnEnity);
+                            }
+                            weekxChReturnEnity.setWkitems(wkdata);
+                        }
+
+                        Map defguidRet = monthRepository.OutDefGuidByWeek(cmap.get("V_GUID").toString());
+                        List defList = (List) defguidRet.get("list");
+                        if (defList.size() > 0) {
+                            List<DWDefReturnEnity> defdata = new ArrayList<>();
+                            for (int d = 0; d < defList.size(); d++) {
+                                Map wdefect = (Map) defList.get(d);
+                                DWDefReturnEnity dwdefReturnEnity = new DWDefReturnEnity();
+                                dwdefReturnEnity.setV_DEFGUID(wdefect.get("V_DEFECT_GUID").toString());
+                                defdata.add(dwdefReturnEnity);
+                            }
+                            weekxChReturnEnity.setWditems(defdata);
+                        }
+
                         lists.add(weekxChReturnEnity);
                     }
                     ret.setV_INFO("成功！");
@@ -200,6 +227,7 @@ public class MonthServiceImpl implements MonthService {
 
                             List<WorkOrderRetTEnity> RlistM = new ArrayList<>();
 
+
                             Map mapw = (Map) listw.get(i);
                             workOrderRetOEnity.setV_ORDERGUID(mapw.get("V_ORDERGUID").toString());
                             workOrderRetOEnity.setV_ORDER_TYP_TXT(mapw.get("V_ORDER_TYP_TXT").toString());
@@ -242,6 +270,20 @@ public class MonthServiceImpl implements MonthService {
                                     RlistM.add(workOrderRetTEnity);
                                 }
                                 workOrderRetOEnity.setItemsMM(RlistM);
+                            }
+
+                            Map wdef=monthRepository.OutDefGuidByWork(mapw.get("V_ORDERGUID").toString());
+                            List listd=(List) wdef.get("list");
+                            if(listd.size()>0){
+                                List<WWDefReturnEnity> dlistd = new ArrayList<>();
+                                for(int p=0;p<listm.size(); p++){
+                                    WWDefReturnEnity wwDefReturnEnity=new WWDefReturnEnity();
+                                    Map dmap=(Map) listd.get(p);
+
+                                    wwDefReturnEnity.setV_V_DEFGUID(dmap.get("V_DEFECT_GUID").toString());
+                                    dlistd.add(wwDefReturnEnity);
+                                }
+                                workOrderRetOEnity.setDgitems(dlistd);
                             }
                             RlistO.add(workOrderRetOEnity);
                         }

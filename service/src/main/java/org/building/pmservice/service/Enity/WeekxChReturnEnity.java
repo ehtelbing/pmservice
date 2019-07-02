@@ -1,5 +1,7 @@
 package org.building.pmservice.service.Enity;
 
+import java.util.List;
+
 public class WeekxChReturnEnity {
     private String V_GUID;
     private String V_EQUTYPECODE;
@@ -25,6 +27,25 @@ public class WeekxChReturnEnity {
     private String V_STR03;
     private String V_STR04;
     private String V_STR05;
+
+    private List<DWWorkReturnEnity> wkitems;
+    private List<DWDefReturnEnity> wditems;
+
+    public List<DWWorkReturnEnity> getWkitems() {
+        return wkitems;
+    }
+    public void setWkitems(List<DWWorkReturnEnity> wkitems) {
+        this.wkitems = wkitems;
+    }
+
+
+    public List<DWDefReturnEnity> getWditems() {
+        return wditems;
+    }
+
+    public void setWditems(List<DWDefReturnEnity> wditems) {
+        this.wditems = wditems;
+    }
 
     public String getV_GUID() {
         return V_GUID;

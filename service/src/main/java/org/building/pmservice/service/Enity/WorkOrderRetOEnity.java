@@ -31,6 +31,15 @@ public class WorkOrderRetOEnity {
     private String V_STR05;
 
     private List<WorkOrderRetTEnity> itemsMM;
+    private List<WWDefReturnEnity> dgitems;
+
+    public List<WWDefReturnEnity> getDgitems() {
+        return dgitems;
+    }
+
+    public void setDgitems(List<WWDefReturnEnity> dgitems) {
+        this.dgitems = dgitems;
+    }
 
     public String getV_ORDERGUID() {
         return V_ORDERGUID;
