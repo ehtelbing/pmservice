@@ -276,7 +276,7 @@ public class MonthServiceImpl implements MonthService {
                             List listd=(List) wdef.get("list");
                             if(listd.size()>0){
                                 List<WWDefReturnEnity> dlistd = new ArrayList<>();
-                                for(int p=0;p<listm.size(); p++){
+                                for(int p=0;p<listd.size(); p++){
                                     WWDefReturnEnity wwDefReturnEnity=new WWDefReturnEnity();
                                     Map dmap=(Map) listd.get(p);
 
