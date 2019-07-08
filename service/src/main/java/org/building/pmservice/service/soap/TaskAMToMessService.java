@@ -75,7 +75,6 @@ public class TaskAMToMessService {
         try {
             String ns = "http://hoteamsoft.org/T";  // {1}
             String wsdlUrl = "http://10.101.10.13/NewsPlat/AMToMess.asmx?wsdl";  // {2}
-            //String wsdlUrl = "http://192.168.3.105/NewsPlat/AMToMess.asmx?WSDL";  // {2}
             String username = "AKSB";
             String password = "AK_SB";
             //1、创建服务(Service)
@@ -132,11 +131,11 @@ public class TaskAMToMessService {
             String MSG = "";
             for (int i = 0; i < result.size(); i++) {
                 Map map = (Map) result.get(i);
-                String messtxt = "PM系统待办提醒";
+                String messtxt = "EAM系统待办提醒";
                 MSG = "<SendMessage><AM_Name>" + map.get("V_JST").toString()
                         + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>"
                         + messtxt + "</MessageTxt><SystemName>设备管理系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
-                String loginurl = "http://10.101.25.134/pm/app/pm/page/login/login.html?v_mancode=" + map.get("V_LOGINNAME").toString() + "&v_type=newangel";
+                String loginurl = "http://10.101.7.72/pm/app/pm/page/login/login.html?v_mancode=" + map.get("V_LOGINNAME").toString() + "&v_type=newangel";
 
                 strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
                 strContent += "<HR size='1' style='color: 52658C;'>";
