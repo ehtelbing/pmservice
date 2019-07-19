@@ -311,4 +311,60 @@ public class MonthRepository {
             }
         });
     }
+
+    //设备可调拨接口状态查询
+    public Map OutEquCodeData(String V_EQU_CODE,String V_STR1,String V_STR2,
+                              String V_STR3,String V_STR4,String V_STR5) {
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PRO_EQU_SEL_WORKADEF(:V_EQU_CODE,:V_STR1,:V_STR2,:V_STR3,:V_STR4,:V_STR5,:V_INFO,:RET)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_EQU_CODE", V_EQU_CODE);
+                statement.setString("V_STR1", V_STR1);
+                statement.setString("V_STR2", V_STR2);
+                statement.setString("V_STR3", V_STR3);
+                statement.setString("V_STR4", V_STR4);
+                statement.setString("V_STR5", V_STR5);
+
+                statement.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+                statement.registerOutParameter("RET", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("RET")));
+                result.put("V_INFO", (String) callableStatement.getString("V_INFO"));
+                return result;
+            }
+        });
+    }
+    //设备可调拨接口状态查询-子工单查询
+    public Map OutEquToWorkId(String V_EQU_CODE) {
+        return template.execute(new CallableStatementCreator() {
+            public CallableStatement createCallableStatement(Connection con)
+                    throws SQLException {
+                String sql = "{call PRO_EQU_SELECT_WORKID(:V_EQU_CODE,:RET)}";
+
+                CallableStatement statement = con.prepareCall(sql);
+                statement.setString("V_EQU_CODE", V_EQU_CODE);
+
+                statement.registerOutParameter("RET", OracleTypes.CURSOR);
+                return statement;
+            }
+        }, new CallableStatementCallback<Map>() {
+            @Override
+            public Map doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {
+                callableStatement.execute();
+                Map result = new HashMap();
+                result.put("list", ResultHash((ResultSet) callableStatement.getObject("RET")));
+
+                return result;
+            }
+        });
+    }
 }

@@ -19,4 +19,7 @@ public interface MonthService {
 
     @WebMethod
     public DefectRetEnity Defect(DefectEnity items);
+
+    @WebMethod
+    public EqucodeRetEnity DM0035(EqucodeEnity items);
 }

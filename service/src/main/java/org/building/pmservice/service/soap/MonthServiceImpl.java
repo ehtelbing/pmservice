@@ -348,5 +348,63 @@ public class MonthServiceImpl implements MonthService {
         }
         return defectRetEnity;
     }
+
+    @Override
+    public EqucodeRetEnity DM0035(EqucodeEnity items){
+        EqucodeRetEnity equcodeRetEnity=new EqucodeRetEnity();
+
+        try{
+            equcodeRetEnity.setV_SYSTEM("SBGL");
+            Map result=monthRepository.OutEquCodeData(items.getV_EQU_CODE(),items.getV_STR1(),items.getV_STR2(),items.getV_STR3(),items.getV_STR4(),items.getV_STR5());
+            List rlist=(List) result.get("list");
+            if(rlist.size()>0){
+                if (result.get("V_INFO").equals("SUCCESS")) {
+                    List<EqucodeRetEnity> elist=new ArrayList<>();
+
+                    for(int i=0;i<rlist.size();i++){
+                        Map emap=(Map) rlist.get(i);
+                        equcodeRetEnity.setF_EQUICODE(items.getV_EQU_CODE());
+                        equcodeRetEnity.setF_GDAMOUNT(emap.get("WALLNUM").toString());
+                        equcodeRetEnity.setF_NGDAMOUNT(emap.get("WUNCLOSNUM").toString());
+                        equcodeRetEnity.setF_DEFAMOUNT(emap.get("DALLNUM").toString());
+                        equcodeRetEnity.setF_NDEFAMOUNT(emap.get("DUNCLOSNUM").toString());
+                        equcodeRetEnity.setF_STR1("");
+                        equcodeRetEnity.setF_STR2("");
+                        equcodeRetEnity.setF_STR3("");
+                        equcodeRetEnity.setF_STR4("");
+                        equcodeRetEnity.setF_STR5("");
+
+                        Map widItems=monthRepository.OutEquToWorkId(items.getV_EQU_CODE());
+                        List widList=(List) widItems.get("list");
+                        if(widList.size()>0){
+                            List<EquWidRetEnity> widitems=new ArrayList<>();
+                            for(int j=0;j<widList.size(); j++){
+                                EquWidRetEnity equWidRetEnity=new EquWidRetEnity();
+                                Map widMap=(Map) widList.get(j);
+                                equWidRetEnity.setF_GDCODE(widMap.get("V_ORDERID").toString());
+                                equWidRetEnity.setF_STR01("");
+                                equWidRetEnity.setF_STR02("");
+                                equWidRetEnity.setF_STR03("");
+                                equWidRetEnity.setF_STR04("");
+                                equWidRetEnity.setF_STR05("");
+                                widitems.add(equWidRetEnity);
+                            }
+                            equcodeRetEnity.setWidItems(widitems);
+                        }
+                        elist.add(equcodeRetEnity);
+                    }
+                    equcodeRetEnity.setV_INFO("成功");
+                    equcodeRetEnity.setV_TYPE("S");
+                    wxjhRepository.WebServiceLog(items.getV_EQU_CODE(), "", "成功", "设备状态接口查询成功");
+                }
+                else{
+                    wxjhRepository.WebServiceLog(items.getV_EQU_CODE(), "", "失败", "设备状态接口查询返回值失败");
+                }
+            }
+        }catch(Exception e){
+            wxjhRepository.WebServiceLog(items.getV_EQU_CODE(), "", "失败", "设备状态接口查询失败"+e.getMessage());
+        }
+        return equcodeRetEnity;
+    }
 }
 
